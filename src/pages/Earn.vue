@@ -27,28 +27,36 @@ const data = [
 ];
 
 function handleCardClick(e) {
+  let x, y;
+
+  // Detect if it's a touch event
+  if (e.touches && e.touches.length > 0) {
+    x = e.touches[0].pageX;
+    y = e.touches[0].pageY;
+  } else {
+    x = e.pageX;
+    y = e.pageY;
+  }
+
   const card = e.currentTarget;
   const rect = card.getBoundingClientRect();
-  const x = e.clientX - rect.left - rect.width / 2;
-  const y = e.clientY - rect.top - rect.height / 2;
+  const offsetX = x - rect.left - rect.width / 2;
+  const offsetY = y - rect.top - rect.height / 2;
 
-  card.style.transform = `perspective(1000px) rotateX(${-y / 10}deg) rotateY(${
-    x / 10
-  }deg)`;
+  card.style.transform = `perspective(1000px) rotateX(${-offsetY / 10}deg) rotateY(${offsetX / 10}deg)`;
 
   setTimeout(() => {
     card.style.transform = "";
   }, 100);
 
   points.value += pointsToAdd;
-  clicks.value.push({ id: Date.now(), x: e.pageX, y: e.pageY });
-
+  clicks.value.push({ id: Date.now(), x, y });
 
   const label = document.createElement("div");
   label.textContent = `+${pointsToAdd}`;
   label.style.position = "absolute";
-  label.style.left = `${e.pageX}px`;
-  label.style.top = `${e.pageY}px`;
+  label.style.left = `${x - 20}px`;
+  label.style.top = `${y}px`;
   label.style.fontSize = "24px";
   label.style.fontWeight = "bold";
   label.style.color = "#fff";
@@ -68,6 +76,7 @@ function handleCardClick(e) {
     label.remove();
   }, 1000);
 }
+
 </script>
 <template>
   <wrapper>
@@ -99,7 +108,9 @@ function handleCardClick(e) {
             <span> <span class="opacity-60">Level 1/ </span>12 </span>
           </div>
           <div class="flex relative h-2 w-full rounded-50 bg-dark-300">
-            <div class="absolute top-0 left-0 h-full w-10 bg-blue-500 rounded-50 border border-dark-555"></div>
+            <div
+              class="absolute top-0 left-0 h-full w-10 bg-blue-500 rounded-50 border border-dark-555"
+            ></div>
           </div>
         </div>
         <div class="flex-grow px-5 py-10">
@@ -107,7 +118,7 @@ function handleCardClick(e) {
             src="@/assets/img/coin.svg"
             class="w-full h-auto object-contain main-coin"
             @click="handleCardClick"
-             
+            @touchstart="handleCardClick"
           />
         </div>
       </div>
