@@ -1,8 +1,15 @@
 import { createRouter, createWebHistory } from "vue-router";
+import Main from "@/layouts/Main.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [],
+  routes: [
+    {
+      path: "/",
+      name: "Main",
+      component: Main,
+    },
+  ],
 });
 
 //   router.beforeEach((to, from, next) => {
