@@ -24,7 +24,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="h-full min-h-dvh w-full">
+  <div class="h-dvh overflow-y-hidden min-h-dvh w-full">
     <div
       v-if="!verticalMode"
       class="fixed inset-0 bg-dark-200 font-medium text-2xl text-white flex items-center justify-center z-50 text-center p-4"
