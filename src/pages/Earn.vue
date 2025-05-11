@@ -113,7 +113,7 @@ function handleCardClick(e) {
             ></div>
           </div>
         </div>
-        <div class="flex-grow p-5 border overflow-y-hidden">
+        <div class="flex-grow p-5  overflow-y-hidden">
           <img
             src="@/assets/img/coin.svg"
             class="w-full h-full object-contain main-coin"
