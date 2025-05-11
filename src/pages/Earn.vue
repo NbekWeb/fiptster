@@ -107,7 +107,7 @@ function handleCardClick(e) {
             src="@/assets/img/coin.svg"
             class="w-full h-auto object-contain main-coin"
             @click="handleCardClick"
-             @touchstart.prevent
+             
           />
         </div>
       </div>
