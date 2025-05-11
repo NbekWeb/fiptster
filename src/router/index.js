@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Main from "@/layouts/Main.vue";
+import Earn from "@/pages/Earn.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -8,6 +9,13 @@ const router = createRouter({
       path: "/",
       name: "Main",
       component: Main,
+      children: [
+        {
+          path: "",
+          name: "Earn",
+          component: Earn,
+        },
+      ],
     },
   ],
 });
