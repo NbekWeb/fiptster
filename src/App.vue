@@ -24,14 +24,14 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="h-full min-h-screen w-full">
+  <div class="h-full min-h-dvh w-full">
     <div
       v-if="!verticalMode"
       class="fixed inset-0 bg-dark-200 font-medium text-2xl text-white flex items-center justify-center z-50 text-center p-4"
     >
       To continue using FIPT, please switch back to vertical mode.
     </div>
-    <div v-else class="w-full min-h-screen">
+    <div v-else class="w-full min-h-dvh">
       <RouterView />
     </div>
   </div>
