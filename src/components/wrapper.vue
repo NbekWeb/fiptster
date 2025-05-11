@@ -1,7 +1,7 @@
 <script setup></script>
 <template>
   <div
-    class="w-full h-[calc(100dvh-84px)] border border-dark-200 overflow-y-hidden"
+    class="w-full h-[calc(100dvh-100px)] border border-dark-200 overflow-y-hidden"
   >
     <div class="h-25 bg-liner w-full flex p-2.5 text-white">
       <slot name="top" />

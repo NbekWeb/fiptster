@@ -113,10 +113,10 @@ function handleCardClick(e) {
             ></div>
           </div>
         </div>
-        <div class="flex-grow px-5 py-10">
+        <div class="flex-grow p-5 border overflow-y-hidden">
           <img
             src="@/assets/img/coin.svg"
-            class="w-full h-auto object-contain main-coin"
+            class="w-full h-full object-contain main-coin"
             @click="handleCardClick"
             @touchstart="handleCardClick"
           />
