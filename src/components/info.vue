@@ -1,4 +1,5 @@
 <script setup>
+import coin from "./icons/coin.vue";
 const props = defineProps({
   data: {
     type: Object,
@@ -14,7 +15,7 @@ const props = defineProps({
       {{ data?.title }}
     </span>
     <div class="flex items-center gap-1">
-      <img src="@/assets/img/coin.svg" class="w-[15px] h-auto object-contain" v-if="data.logo" />
+      <coin class="text-[15px]" v-if="data.logo" />
       <span class="font-semibold">
         {{ data.content }}
       </span>
@@ -27,7 +28,6 @@ const props = defineProps({
         </a>
         <template #overlay>
           <a-menu>
-           
             <a-menu-item key="3"> {{ data.info }}</a-menu-item>
           </a-menu></template
         >

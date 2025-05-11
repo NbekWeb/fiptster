@@ -2,6 +2,7 @@
 import wrapper from "@/components/wrapper.vue";
 import info from "@/components/info.vue";
 import chevron from "@/components/icons/chevron.vue";
+import coin from "@/components/icons/coin.vue";
 import { ref } from "vue";
 const points = ref(0);
 const pointsToAdd = 12;
@@ -94,10 +95,7 @@ function handleCardClick(e) {
         <div
           class="flex items-center justify-center gap-2 font-bold text-40 my-5"
         >
-          <img
-            src="@/assets/img/coin.svg"
-            class="h-[42px] w-auto object-contain"
-          />
+        <coin class="text-[42px]"/>
           <span> 507, 981 </span>
         </div>
         <div class="flex flex-col gap-1.5">
@@ -115,7 +113,7 @@ function handleCardClick(e) {
         </div>
         <div class="flex-grow p-5  overflow-y-hidden">
           <img
-            src="@/assets/img/coin.svg"
+            src="@/assets/img/main-coin.png"
             class="w-full h-full object-contain main-coin"
             @click="handleCardClick"
             @touchstart="handleCardClick"
