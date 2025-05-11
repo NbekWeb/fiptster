@@ -7,26 +7,17 @@ body {
   box-sizing: border-box;
 }
 
-:where(.css-dev-only-do-not-override-1p3hq3p).ant-dropdown .ant-dropdown-menu,
-:where(.css-dev-only-do-not-override-1p3hq3p).ant-dropdown-menu-submenu
-  .ant-dropdown-menu {
-  background-color: #c7c7c7 !important;;
-  max-width: 80px !important;;
+.ant-dropdown .ant-dropdown-menu,
+.ant-dropdown-menu-submenu .ant-dropdown-menu {
+  background-color: #c7c7c7 !important;
+  max-width: 80px !important;
 }
 
-:where(.css-dev-only-do-not-override-1p3hq3p).ant-dropdown
-  .ant-dropdown-menu
-  .ant-dropdown-menu-item,
-:where(.css-dev-only-do-not-override-1p3hq3p).ant-dropdown-menu-submenu
-  .ant-dropdown-menu
-  .ant-dropdown-menu-item,
-:where(.css-dev-only-do-not-override-1p3hq3p).ant-dropdown
-  .ant-dropdown-menu
-  .ant-dropdown-menu-submenu-title,
-:where(.css-dev-only-do-not-override-1p3hq3p).ant-dropdown-menu-submenu
-  .ant-dropdown-menu
-  .ant-dropdown-menu-submenu-title {
-  padding: 0;
+.ant-dropdown .ant-dropdown-menu .ant-dropdown-menu-item,
+.ant-dropdown-menu-submenu .ant-dropdown-menu .ant-dropdown-menu-item,
+.ant-dropdown .ant-dropdown-menu .ant-dropdown-menu-submenu-title,
+.ant-dropdown-menu-submenu .ant-dropdown-menu .ant-dropdown-menu-submenu-title {
+  padding: 0 !important;
   font-size: 8px !important;
   color: #717171 !important;
 }
