@@ -105,8 +105,9 @@ function handleCardClick(e) {
         <div class="flex-grow px-5 py-10">
           <img
             src="@/assets/img/coin.svg"
-            class="w-full h-auto object-contain"
+            class="w-full h-auto object-contain main-coin"
             @click="handleCardClick"
+             @touchstart.prevent
           />
         </div>
       </div>
@@ -116,5 +117,10 @@ function handleCardClick(e) {
 <style scoped>
 .bg-liner {
   background: linear-gradient(180deg, #212429 6.09%, #3599ea 164.78%);
+}
+.main-coin {
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
 }
 </style>
