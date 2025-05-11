@@ -6,15 +6,18 @@ module.exports = {
       screens: {},
       colors: {
         blue: {
-          100: "#F1FBFF",
-          700: "#07577A",
+          500: "#3599EA",
+        },
+        dark: {
+          200: "#2C2F35",
+          500:'#535559'
         },
         red: {
           500: "#EB6578",
         },
       },
       fontSize: {
-        "3xl": "28px",
+        'min':'10px'
       },
       lineHeight: {
         "3xl": "32px",
