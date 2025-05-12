@@ -31,7 +31,7 @@ const menus = [
 </script>
 <template>
   <div
-    class="grid bg-dark-280 text-white grid-cols-6 gap-0 w-full border px-2 pt-1 pb-10 border-t border-dark-500  text-min h-25"
+    class="grid bg-dark-280 text-white grid-cols-6 gap-0 w-full border px-2 pt-1 pb-5 border-t border-dark-500  text-min h-20"
   >
     <div
       v-for="(item, i) in menus"
