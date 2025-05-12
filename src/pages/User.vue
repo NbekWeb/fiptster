@@ -1,6 +1,6 @@
 <script setup>
 import wrapper from "@/components/wrapper.vue";
-import { ref } from "vue";
+import { ref,onMounted } from "vue";
 import MiniCard from "@/components/MiniCard.vue";
 import coin from "@/components/icons/coin.vue";
 import cash from "@/components/icons/cash.vue";
