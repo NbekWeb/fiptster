@@ -10,6 +10,7 @@ module.exports = {
         },
         dark: {
           200: "#2C2F35",
+          220: "#2A2D32",
           280: "#282B30",
           300: "#32363C",
           500: "#535559",
@@ -24,6 +25,7 @@ module.exports = {
       },
       fontSize: {
         7: "7px",
+        15: "15px",
         min: "10px",
         40: "40px",
       },
@@ -31,6 +33,7 @@ module.exports = {
         "3xl": "32px",
       },
       spacing: {
+        3.75: "15px",
         13: "52px",
         15: "60px",
         17: "68px",
@@ -41,7 +44,7 @@ module.exports = {
         8.5: "34px",
         12.5: "50px",
         7.5: "30px",
-        21:'84px'
+        21: "84px",
       },
       borderRadius: {
         10: "10px",

@@ -1,4 +1,5 @@
 import './assets/style/main.css'
+import './assets/style/ant.css'
 
 import {
     createApp

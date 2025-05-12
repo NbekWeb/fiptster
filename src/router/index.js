@@ -15,6 +15,11 @@ const router = createRouter({
           name: "Earn",
           component: Earn,
         },
+        {
+          path: "user",
+          name: "User",
+          component: () => import("@/pages/User.vue"),
+        },
       ],
     },
   ],

@@ -4,9 +4,16 @@ import info from "@/components/info.vue";
 import chevron from "@/components/icons/chevron.vue";
 import coin from "@/components/icons/coin.vue";
 import { ref } from "vue";
+import { useRouter } from "vue-router";
+
+const router=useRouter()
 const points = ref(0);
 const pointsToAdd = 12;
 const clicks = ref([]);
+
+function goUser(){
+  router.push({name:'User'})
+}
 
 const data = [
   {
@@ -82,7 +89,7 @@ function handleCardClick(e) {
 <template>
   <wrapper>
     <template #top>
-      <div class="max-h-max w-full flex justify-center gap-2 items-center">
+      <div class="max-h-max w-full flex justify-center gap-2 items-center" @click="goUser">
         <img src="@/assets/img/user.png" class="w-8.5 h-auto object-contain" />
         <span class="font-medium">@Nbekdev</span>
       </div>

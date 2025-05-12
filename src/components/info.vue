@@ -15,7 +15,7 @@ const props = defineProps({
       {{ data?.title }}
     </span>
     <div class="flex items-center gap-1">
-      <coin class="text-[15px]" v-if="data.logo" />
+      <coin class="text-15" v-if="data.logo" />
       <span class="font-semibold">
         {{ data.content }}
       </span>
@@ -23,7 +23,7 @@ const props = defineProps({
         <a class="ant-dropdown-link" @click.prevent>
           <img
             src="@/assets/img/info.svg"
-            class="opacity-50 w-[15px] h-auto object-contain"
+            class="opacity-50 w-3.75 h-auto object-contain"
           />
         </a>
         <template #overlay>
