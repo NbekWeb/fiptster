@@ -25,6 +25,7 @@ function goTg() {
 }
 
 const connectWallet = () => {
+  connecting.value = true;
   const tonConnectUI = new TonConnectUI({
     manifestUrl: "https://fiptster.vercel.app/tonconnect-manifest.json",
     buttonRootId: "ton-connect-button",
@@ -34,18 +35,10 @@ const connectWallet = () => {
     .connect()
     .then((wallet) => {})
     .catch((err) => {
+      connecting.value = false;
     });
 };
-onMounted(() => {
-  const tonConnectUI = new TonConnectUI({
-    manifestUrl: "https://fiptster.vercel.app/tonconnect-manifest.json",
-    buttonRootId: "ton-connect-button",
-  });
 
-  if (tonConnectUI.connector.connected) {
-    connecting.value = true;
-  }
-});
 </script>
 <template>
   <wrapper>
@@ -118,9 +111,15 @@ onMounted(() => {
           </MiniCard>
           <MiniCard>
             <div class="flex justify-between items-center w-full">
-              <span> Connect Wallet {{ connecting }} </span>
-             
-              <button  id="ton-connect-button"></button>
+              <span> Total FIPTp Earned </span>
+              <div
+                @click="connectWallet"
+                v-if="!connecting"
+                class="h-10 flex w-10 justify-center text-xl items-center bg-dark-220 rounded-md"
+              >
+                <cash />
+              </div>
+              <button v-show="connecting" id="ton-connect-button"></button>
             </div>
           </MiniCard>
         </div>
