@@ -40,14 +40,14 @@ const connectWallet = () => {
     });
 };
 onMounted(() => {
-  const tonConnectUI = new TonConnectUI({
-    manifestUrl: "https://click-bit.vercel.app/tonconnect-manifest.json",
-    buttonRootId: "ton-connect-button",
-  });
+//   const tonConnectUI = new TonConnectUI({
+//     manifestUrl: "https://click-bit.vercel.app/tonconnect-manifest.json",
+//     buttonRootId: "ton-connect-button",
+//   });
 
-  if (tonConnectUI.connector.connected) {
-    connecting.value = true;
-  }
+//   if (tonConnectUI.connector.connected) {
+//     connecting.value = true;
+//   }
 });
 </script>
 <template>
@@ -129,7 +129,7 @@ onMounted(() => {
               >
                 <cash />
               </div>
-              <button v-show="connecting" id="ton-connect-button"></button>
+              <button  id="ton-connect-button"></button>
             </div>
           </MiniCard>
         </div>
