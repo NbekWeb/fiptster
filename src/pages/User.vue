@@ -129,7 +129,7 @@ onMounted(() => {
               >
                 <cash />
               </div>
-              <button v-else id="ton-connect-button"></button>
+              <button v-show="connecting" id="ton-connect-button"></button>
             </div>
           </MiniCard>
         </div>
