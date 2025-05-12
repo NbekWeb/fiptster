@@ -1,6 +1,6 @@
 <script setup>
 import wrapper from "@/components/wrapper.vue";
-import { ref,onMounted } from "vue";
+import { ref, onMounted } from "vue";
 import MiniCard from "@/components/MiniCard.vue";
 import coin from "@/components/icons/coin.vue";
 import cash from "@/components/icons/cash.vue";
@@ -25,29 +25,28 @@ function goTg() {
 }
 
 const connectWallet = () => {
+  connecting.value = true;
   const tonConnectUI = new TonConnectUI({
-    manifestUrl: "https://click-bit.vercel.app/tonconnect-manifest.json",
+    manifestUrl: "https://fiptster.vercel.app/tonconnect-manifest.json",
     buttonRootId: "ton-connect-button",
   });
 
   tonConnectUI.connector
     .connect()
-    .then((wallet) => {
-      connecting.value = true;
-    })
+    .then((wallet) => {})
     .catch((err) => {
       connecting.value = false;
     });
 };
 onMounted(() => {
-//   const tonConnectUI = new TonConnectUI({
-//     manifestUrl: "https://click-bit.vercel.app/tonconnect-manifest.json",
-//     buttonRootId: "ton-connect-button",
-//   });
+  const tonConnectUI = new TonConnectUI({
+    manifestUrl: "https://fiptster.vercel.app/tonconnect-manifest.json",
+    buttonRootId: "ton-connect-button",
+  });
 
-//   if (tonConnectUI.connector.connected) {
-//     connecting.value = true;
-//   }
+  if (tonConnectUI.connector.connected) {
+    connecting.value = true;
+  }
 });
 </script>
 <template>
@@ -129,7 +128,7 @@ onMounted(() => {
               >
                 <cash />
               </div>
-              <button  id="ton-connect-button"></button>
+              <button v-show="connecting" id="ton-connect-button"></button>
             </div>
           </MiniCard>
         </div>
