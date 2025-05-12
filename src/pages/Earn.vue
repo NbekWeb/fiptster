@@ -99,15 +99,15 @@ function handleCardClick(e) {
           <span> 507, 981 </span>
         </div>
         <div class="flex flex-col gap-1.5">
-          <div class="w-full flex justify-between items-center text-7">
+          <div class="w-full flex justify-between items-center text-min">
             <span class="flex items-center gap-0.5"
-              >Level <chevron class="text-[5px]" />
+              >Level <chevron class="text-7" />
             </span>
             <span> <span class="opacity-60">Level 1/ </span>12 </span>
           </div>
-          <div class="flex relative h-2 w-full rounded-50 bg-dark-300">
+          <div class="flex relative h-2 w-full rounded-50 bg-dark-300 border border-dark-555">
             <div
-              class="absolute top-0 left-0 h-full w-10 bg-blue-500 rounded-50 border border-dark-555"
+              class="absolute top-0 left-0 h-full w-10 bg-blue-500 rounded-50 "
             ></div>
           </div>
         </div>
