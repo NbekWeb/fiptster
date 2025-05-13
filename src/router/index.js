@@ -20,6 +20,11 @@ const router = createRouter({
           name: "User",
           component: () => import("@/pages/User.vue"),
         },
+        {
+          path: "levels",
+          name: "Levels",
+          component: () => import("@/pages/Levels.vue"),
+        },
       ],
     },
   ],

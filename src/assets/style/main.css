@@ -2,9 +2,42 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
 body {
   font-family: "Roboto", sans-serif;
   box-sizing: border-box;
+}
+
+.level-card {
+  border: 8px solid transparent;
+  border-radius: 20px;
+  width: 180px;
+  height: 180px;
+  padding: 16px;
+}
+.blur {
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  left: 50%;
+  transform: translateX(-50%);
+  filter: blur(80px);
+  position: absolute;
+  top: 0;
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+  color: #ffffffa3 !important;
+    top: 125px !important;
+}
+.swiper-button-prev:after,
+.swiper-button-next:after {
+  font-size: 24px !important;
+}
+.swiper-button-next {
+  right: 25px !important;
+
+}
+.swiper-button-prev{
+  right: 25px !important;
 }
