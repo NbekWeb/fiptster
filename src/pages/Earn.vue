@@ -5,11 +5,19 @@ import chevron from "@/components/icons/chevron.vue";
 import coin from "@/components/icons/coin.vue";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import tapSoundURL from "../assets/sound/tab.wav";
+const tapSound = ref(null);
 
 const router = useRouter();
 const points = ref(0);
 const pointsToAdd = 12;
 const clicks = ref([]);
+
+function initAudio() {
+  if (!tapSound.value) {
+    tapSound.value = new Audio(tapSoundURL);
+  }
+}
 
 function goTo(name) {
   router.push({ name });
@@ -35,9 +43,18 @@ const data = [
 ];
 
 function handleCardClick(e) {
+  initAudio();
+
+  if (tapSound.value) {
+    try {
+      tapSound.value.currentTime = 0;
+      tapSound.value.play();
+    } catch (err) {
+      console.warn("Audio play blocked:", err);
+    }
+  }
   let x, y;
 
-  // Detect if it's a touch event
   if (e.touches && e.touches.length > 0) {
     x = e.touches[0].pageX;
     y = e.touches[0].pageY;
@@ -124,10 +141,10 @@ function handleCardClick(e) {
             ></div>
           </div>
         </div>
-        <div class="flex-grow p-5 overflow-y-hidden">
+        <div class="flex-grow p-5 overflow-y-hidden h-full flex items-center">
           <img
             src="@/assets/img/main-coin.png"
-            class="w-full h-full object-contain main-coin"
+            class="w-full h-auto object-contain main-coin"
             @click="handleCardClick"
             @touchstart="handleCardClick"
           />
