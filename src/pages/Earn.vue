@@ -3,7 +3,7 @@ import wrapper from "@/components/wrapper.vue";
 import info from "@/components/info.vue";
 import chevron from "@/components/icons/chevron.vue";
 import coin from "@/components/icons/coin.vue";
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import tapSoundURL from "../assets/sound/tab.wav";
 const tapSound = ref(null);
@@ -13,10 +13,8 @@ const points = ref(0);
 const pointsToAdd = 12;
 const clicks = ref([]);
 
-function initAudio() {
-  if (!tapSound.value) {
-    tapSound.value = new Audio(tapSoundURL);
-  }
+function initAudioOnce() {
+  tapSound.value = new Audio(tapSoundURL);
 }
 
 function goTo(name) {
@@ -43,7 +41,14 @@ const data = [
 ];
 
 function handleCardClick(e) {
-  initAudio();
+  if (tapSound.value) {
+    try {
+      tapSound.value.currentTime = 0;
+      tapSound.value.play();
+    } catch (err) {
+      console.warn("Audio play blocked:", err);
+    }
+  }
 
   if (tapSound.value) {
     try {
@@ -103,6 +108,11 @@ function handleCardClick(e) {
     label.remove();
   }, 1000);
 }
+
+onMounted(() => {
+  window.addEventListener("click", initAudioOnce, { once: true });
+  window.addEventListener("touchstart", initAudioOnce, { once: true });
+});
 </script>
 <template>
   <wrapper>
@@ -141,10 +151,10 @@ function handleCardClick(e) {
             ></div>
           </div>
         </div>
-        <div class="flex-grow p-5 overflow-y-hidden h-full flex items-center">
+        <div class="flex-grow p-5 h-full flex items-center justify-center overflow-y-hidden">
           <img
             src="@/assets/img/main-coin.png"
-            class="w-full h-auto object-contain main-coin"
+            class="w-full h-full object-contain main-coin max-h-max border border-red-500 max-w-max rounded-full"
             @click="handleCardClick"
             @touchstart="handleCardClick"
           />
