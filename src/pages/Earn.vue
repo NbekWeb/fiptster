@@ -110,9 +110,9 @@ function handleCardClick(e) {
           <span> 507, 981 </span>
         </div>
         <div class="flex flex-col gap-1.5">
-          <div class="w-full flex justify-between items-center text-min">
-            <span class="flex items-center gap-0.5" @click="goTo('Level')"
-              >Level <chevron class="text-7" />
+          <div class="w-full flex justify-between items-center text-sm">
+            <span class="flex items-center gap-0.5" @click="goTo('Levels')"
+              >Level <chevron class="text-xs" />
             </span>
             <span> <span class="opacity-60">Level 1/ </span>12 </span>
           </div>

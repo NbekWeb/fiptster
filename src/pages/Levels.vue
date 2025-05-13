@@ -7,6 +7,7 @@ import "swiper/css/pagination";
 import { ref, onMounted, computed } from "vue";
 import { Navigation } from "swiper/modules";
 import { levels } from "@/utils/levels";
+import userCard from "@/components/userCard.vue";
 
 const activeIndex = ref(0);
 function onSlideChange(swiper) {
@@ -18,25 +19,47 @@ const dynamicBlurStyle = computed(() => {
     background: `${levels[activeIndex.value]?.blurColor}`,
   };
 });
+
+const me = {
+  name: "@itsmebro",
+  coin: "30,613",
+  place: 5,
+};
 </script>
 <template>
-  <div class="flex justify-center text-white relative">
-    <div class="blur" :style="dynamicBlurStyle"></div>
-
-    <Swiper
-      :modules="[Navigation]"
-      :slides-per-view="1"
-      :space-between="20"
-      navigation
-      pagination
-      class="w-full max-w-4xl !py-8"
-      @slideChange="onSlideChange"
+  <div class="h-full">
+    <div
+      class="flex max-h-dvh min-h-dvh h-auto flex-col items-center text-white relative border overflow-y-auto"
     >
-      <SwiperSlide v-for="(item, i) in levels" :key="i">
-        <levelCard
-          :data="item"
-        />
-      </SwiperSlide>
-    </Swiper>
+      <div class="blur" :style="dynamicBlurStyle"></div>
+
+      <Swiper
+        :modules="[Navigation]"
+        :slides-per-view="1"
+        :space-between="20"
+        navigation
+        pagination
+        class="w-full max-w-4xl !py-8 min-h-max"
+        @slideChange="onSlideChange"
+      >
+        <SwiperSlide v-for="(item, i) in levels" :key="i">
+          <levelCard :data="item" />
+        </SwiperSlide>
+      </Swiper>
+      <div class="min-h-max flex flex-col w-full px-4">
+        <div class="flex flex-col items-start w-full gap-1">
+          <span class="text-base font-semibold"> Me </span>
+          <userCard :data="me" />
+        </div>
+        <div class="flex flex-col items-start w-full gap-1 mt-4">
+          <span class="text-base font-semibold"> Top 100 Earners </span>
+          <div class="flex flex-col gap-2 w-full">
+            <template v-for="i in 101">
+              <userCard :data="{ ...me, place: i }" />
+            </template>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>

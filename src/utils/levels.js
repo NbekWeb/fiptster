@@ -80,7 +80,7 @@ export const levels = [
   },
   {
     bg1: "#90C2F0",
-    bg2: "#90C2F0",
+    bg2: "#FEE2D0",
     border1: "#6C94B8",
     border2: "#6C94B8",
     blurColor: "radial-gradient(106.39% 106.39% at 11.72% 20.72%, #73B8FF 12.5%, #FF6015 78.5%)",
