@@ -53,8 +53,8 @@ const me = {
         </div>
         <div class="flex flex-col items-start w-full gap-1 mt-4">
           <span class="text-base font-semibold"> Top 100 Earners </span>
-          <div class="flex flex-col gap-2 w-full">
-            <template v-for="i in 101">
+          <div class="flex flex-col gap-2 w-full pb-2">
+            <template v-for="i in 100">
               <userCard :data="{ ...me, place: i }" />
             </template>
           </div>
