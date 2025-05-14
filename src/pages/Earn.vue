@@ -179,7 +179,6 @@ function handleCardClick(e) {
             src="@/assets/img/main-coin.png"
             class="w-full h-full object-contain main-coin max-h-max border border-red-500 max-w-max rounded-full"
             @click="handleCardClick"
-            @touchstart="handleCardClick"
           />
         </div>
       </div>
