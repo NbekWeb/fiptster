@@ -106,7 +106,7 @@ function handleCardClick(e) {
 
   setTimeout(() => {
     label.remove();
-  }, 1000);
+  }, 500);
 }
 
 onMounted(() => {
