@@ -27,9 +27,9 @@ const me = {
 };
 </script>
 <template>
-  <div class="h-full">
+  <div class="h-auto">
     <div
-      class="flex max-h-dvh min-h-dvh h-auto flex-col items-center text-white relative overflow-y-auto"
+      class="flex  flex-col items-center text-white relative "
     >
       <div class="blur" :style="dynamicBlurStyle"></div>
 
