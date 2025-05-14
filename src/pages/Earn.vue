@@ -5,12 +5,23 @@ import chevron from "@/components/icons/chevron.vue";
 import coin from "@/components/icons/coin.vue";
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
-import tapSoundURL from "../assets/sound/tab.wav";
+import tapSoundURL from "../assets/sound/sound.mp3";
 
 const router = useRouter();
 const points = ref(0);
 const pointsToAdd = 12;
 const clicks = ref([]);
+
+const tapSound = new Audio(tapSoundURL);
+tapSound.loop = true;
+
+function playTapSoundOnce() {
+  const sound = new Audio(tapSoundURL);
+  sound.play().catch((err) => {
+    console.warn("Audio play blocked:", err);
+  });
+}
+
 
 function goTo(name) {
   router.push({ name });
@@ -34,18 +45,25 @@ const data = [
     info: "Lorem Ipsum dolor cop Lorem Ipsum dolor,  Lorem Ipsum dolor",
   },
 ];
-function playTapSound() {
-  if (!tapSoundURL) return;
+function playTapSoundLooping() {
+  if (tapSound.paused) {
+    tapSound.currentTime = 0;
+    tapSound.play().catch((err) => {
+      console.warn("Audio play blocked:", err);
+    });
+  }
 
-  const sound = new Audio(tapSoundURL);
-  sound.currentTime = 0;
-  sound.play().catch((err) => {
-    console.warn("Audio play blocked:", err);
-  });
+  if (stopSoundTimeout) {
+    clearTimeout(stopSoundTimeout);
+  }
+
+  stopSoundTimeout = setTimeout(() => {
+    tapSound.pause();
+  }, 500); 
 }
 
 function handleCardClick(e) {
-  playTapSound();
+  playTapSoundOnce(); 
 
   let x, y;
 
