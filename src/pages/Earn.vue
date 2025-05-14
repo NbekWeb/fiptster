@@ -14,6 +14,7 @@ const clicks = ref([]);
 
 let tapAudioInstances = [];
 let stopAudioTimer = null;
+let lastClickTime = 0;
 
 function playTapSoundWithTimeout() {
   // Create a new audio instance
@@ -27,15 +28,13 @@ function playTapSoundWithTimeout() {
 
   stopAudioTimer = setTimeout(() => {
     // Stop and clean all audio instances
-    tapAudioInstances.forEach(a => {
+    tapAudioInstances.forEach((a) => {
       a.pause();
       a.currentTime = 0;
     });
     tapAudioInstances = [];
   }, 300);
 }
-
-
 
 function goTo(name) {
   router.push({ name });
@@ -59,25 +58,12 @@ const data = [
     info: "Lorem Ipsum dolor cop Lorem Ipsum dolor,  Lorem Ipsum dolor",
   },
 ];
-function playTapSoundLooping() {
-  if (tapSound.paused) {
-    tapSound.currentTime = 0;
-    tapSound.play().catch((err) => {
-      console.warn("Audio play blocked:", err);
-    });
-  }
-
-  if (stopSoundTimeout) {
-    clearTimeout(stopSoundTimeout);
-  }
-
-  stopSoundTimeout = setTimeout(() => {
-    tapSound.pause();
-  }, 500); 
-}
 
 function handleCardClick(e) {
-  playTapSoundWithTimeout(); 
+  const now = Date.now();
+  if (now - lastClickTime < 100) return; // prevent double-firing
+  lastClickTime = now;
+  playTapSoundWithTimeout();
 
   let x, y;
 
@@ -129,11 +115,6 @@ function handleCardClick(e) {
     label.remove();
   }, 500);
 }
-
-// onMounted(() => {
-//   window.addEventListener("click", initAudioOnce, { once: true });
-//   window.addEventListener("touchstart", initAudioOnce, { once: true });
-// });
 </script>
 <template>
   <wrapper>
