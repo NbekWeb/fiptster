@@ -12,15 +12,29 @@ const points = ref(0);
 const pointsToAdd = 12;
 const clicks = ref([]);
 
-const tapSound = new Audio(tapSoundURL);
-tapSound.loop = true;
+let tapAudioInstances = [];
+let stopAudioTimer = null;
 
-function playTapSoundOnce() {
-  const sound = new Audio(tapSoundURL);
-  sound.play().catch((err) => {
-    console.warn("Audio play blocked:", err);
-  });
+function playTapSoundWithTimeout() {
+  // Create a new audio instance
+  const audio = new Audio(tapSoundURL);
+  audio.play().catch((err) => console.warn("Play blocked", err));
+
+  tapAudioInstances.push(audio);
+
+  // Reset timer to stop all audio if no click in 300ms
+  if (stopAudioTimer) clearTimeout(stopAudioTimer);
+
+  stopAudioTimer = setTimeout(() => {
+    // Stop and clean all audio instances
+    tapAudioInstances.forEach(a => {
+      a.pause();
+      a.currentTime = 0;
+    });
+    tapAudioInstances = [];
+  }, 300);
 }
+
 
 
 function goTo(name) {
@@ -63,7 +77,7 @@ function playTapSoundLooping() {
 }
 
 function handleCardClick(e) {
-  playTapSoundOnce(); 
+  playTapSoundWithTimeout(); 
 
   let x, y;
 
