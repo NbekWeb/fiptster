@@ -115,6 +115,19 @@ function handleCardClick(e) {
     label.remove();
   }, 500);
 }
+
+function initAudioOnce() {
+  // Play a dummy sound to unlock autoplay restrictions
+  const audio = new Audio(tapSoundURL);
+  audio.play().catch((err) => console.warn("Play blocked:", err));
+}
+
+// Call on mounted to unlock audio play on first interaction
+onMounted(() => {
+  // Make sure the first interaction unlocks the ability to play sound
+  window.addEventListener("click", initAudioOnce, { once: true });
+  window.addEventListener("touchstart", initAudioOnce, { once: true });
+});
 </script>
 <template>
   <wrapper>
@@ -159,7 +172,8 @@ function handleCardClick(e) {
           <img
             src="@/assets/img/main-coin.png"
             class="w-full h-full object-contain main-coin max-h-max border border-red-500 max-w-max rounded-full"
-            @click="handleCardClick"
+            @touchstart="handleCardClick"
+            @click.prevent="handleCardClick"
           />
         </div>
       </div>
