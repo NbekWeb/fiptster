@@ -172,7 +172,7 @@ onMounted(() => {
           <img
             src="@/assets/img/main-coin.png"
             class="w-full h-full object-contain main-coin max-h-max border border-red-500 max-w-max rounded-full"
-            @touchstart="handleCardClick"
+            
             @click.prevent="handleCardClick"
           />
         </div>
