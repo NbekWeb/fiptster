@@ -6,16 +6,11 @@ import coin from "@/components/icons/coin.vue";
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import tapSoundURL from "../assets/sound/tab.wav";
-const tapSound = ref(null);
 
 const router = useRouter();
 const points = ref(0);
 const pointsToAdd = 12;
 const clicks = ref([]);
-
-function initAudioOnce() {
-  tapSound.value = new Audio(tapSoundURL);
-}
 
 function goTo(name) {
   router.push({ name });
@@ -39,25 +34,19 @@ const data = [
     info: "Lorem Ipsum dolor cop Lorem Ipsum dolor,  Lorem Ipsum dolor",
   },
 ];
+function playTapSound() {
+  if (!tapSoundURL) return;
+
+  const sound = new Audio(tapSoundURL);
+  sound.currentTime = 0;
+  sound.play().catch((err) => {
+    console.warn("Audio play blocked:", err);
+  });
+}
 
 function handleCardClick(e) {
-  if (tapSound.value) {
-    try {
-      tapSound.value.currentTime = 0;
-      tapSound.value.play();
-    } catch (err) {
-      console.warn("Audio play blocked:", err);
-    }
-  }
+  playTapSound();
 
-  if (tapSound.value) {
-    try {
-      tapSound.value.currentTime = 0;
-      tapSound.value.play();
-    } catch (err) {
-      console.warn("Audio play blocked:", err);
-    }
-  }
   let x, y;
 
   if (e.touches && e.touches.length > 0) {
@@ -109,10 +98,10 @@ function handleCardClick(e) {
   }, 500);
 }
 
-onMounted(() => {
-  window.addEventListener("click", initAudioOnce, { once: true });
-  window.addEventListener("touchstart", initAudioOnce, { once: true });
-});
+// onMounted(() => {
+//   window.addEventListener("click", initAudioOnce, { once: true });
+//   window.addEventListener("touchstart", initAudioOnce, { once: true });
+// });
 </script>
 <template>
   <wrapper>
@@ -151,7 +140,9 @@ onMounted(() => {
             ></div>
           </div>
         </div>
-        <div class="flex-grow p-5 h-full flex items-center justify-center overflow-y-hidden">
+        <div
+          class="flex-grow p-5 h-full flex items-center justify-center overflow-y-hidden"
+        >
           <img
             src="@/assets/img/main-coin.png"
             class="w-full h-full object-contain main-coin max-h-max border border-red-500 max-w-max rounded-full"
