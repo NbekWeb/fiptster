@@ -34,7 +34,7 @@ onBeforeUnmount(() => {
     >
       To continue using FIPT, please switch back to vertical mode.
     </div>
-    <div v-else class="w-full min-h-dvh">
+    <div v-else class="w-full min-h-dvh ">
       <RouterView />
     </div>
   </div>

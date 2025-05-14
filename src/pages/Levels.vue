@@ -29,7 +29,7 @@ const me = {
 <template>
   <div class="h-full">
     <div
-      class="flex max-h-dvh min-h-dvh h-auto flex-col items-center text-white relative border overflow-y-auto"
+      class="flex max-h-dvh min-h-dvh h-auto flex-col items-center text-white relative overflow-y-auto"
     >
       <div class="blur" :style="dynamicBlurStyle"></div>
 
@@ -39,7 +39,7 @@ const me = {
         :space-between="20"
         navigation
         pagination
-        class="w-full max-w-4xl !py-8 min-h-max"
+        class="w-full  !py-8 !min-h-max !overflow-x-hidden !max-w-[100vw]"
         @slideChange="onSlideChange"
       >
         <SwiperSlide v-for="(item, i) in levels" :key="i">

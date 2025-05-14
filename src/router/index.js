@@ -21,6 +21,11 @@ const router = createRouter({
           component: () => import("@/pages/User.vue"),
         },
         {
+          path: "feed",
+          name: "Feed",
+          component: () => import("@/pages/Feed.vue"),
+        },
+        {
           path: "levels",
           name: "Levels",
           component: () => import("@/pages/Levels.vue"),

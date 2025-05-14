@@ -31,7 +31,7 @@ const coins = [gold, silver, bronze];
         </div>
       </div>
     </div>
-    <span class="opacity-60" v-if="place > 3">
+    <span class="opacity-60" v-if="data?.place > 3">
       {{ data?.place }}
     </span>
     <div v-else class="flex items-center gap-4">
