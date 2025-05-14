@@ -119,6 +119,8 @@ function handleCardClick(e) {
 function initAudioOnce() {
   // Play a dummy sound to unlock autoplay restrictions
   const audio = new Audio(tapSoundURL);
+    audio.muted = true;
+
   audio.play().catch((err) => console.warn("Play blocked:", err));
 }
 
