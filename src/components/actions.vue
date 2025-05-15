@@ -22,6 +22,23 @@ const toggleLike = () => {
     animate.value = false;
   }, 300);
 };
+
+const handleShare = async () => {
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title: "Check this out!",
+        text: "I found something interesting for you.",
+        url: window.location.href,
+      });
+      console.log("Shared successfully");
+    } catch (error) {
+      console.warn("Share canceled or failed:", error);
+    }
+  } else {
+    alert("Your browser doesn't support the Share API.");
+  }
+};
 </script>
 
 <template>
@@ -45,7 +62,7 @@ const toggleLike = () => {
       <span class="text-sm font-medium">200</span>
     </div>
     <div class="flex flex-col items-center hover:cursor-pointer">
-      <share />
+      <share @click="handleShare"/>
       <span class="text-sm font-medium">35K</span>
     </div>
   </div>
