@@ -1,16 +1,35 @@
 <script setup>
 import start from "./icons/start.vue";
 import stopIcon from "./icons/stop.vue";
-import muted from "./icons/muted.vue";
+import mutedIcon from "./icons/muted.vue";
 import chevron from "./icons/chevron.vue";
 import audioIcon from "./icons/audio.vue";
 import comment from "./comment.vue";
 import send from "./icons/send.vue";
-import { ref } from "vue";
+import { ref, defineExpose, watch } from "vue";
 import actions from "@/components/actions.vue";
+import useVideo from "@/stores/video.pinia";
+import { storeToRefs } from "pinia";
+
+const videoPinia = useVideo();
+const { muted } = storeToRefs(videoPinia);
 
 const open = ref(false);
+const videoRef = ref(null);
+const isPlaying = ref(true);
 const commentText = ref("");
+
+function toggleVideoPlayback() {
+  if (!videoRef.value) return;
+
+  if (isPlaying.value) {
+    videoRef.value.pause();
+  } else {
+    videoRef.value.play();
+  }
+
+  isPlaying.value = !isPlaying.value;
+}
 
 function onClose() {
   open.value = false;
@@ -18,17 +37,49 @@ function onClose() {
 function openCom() {
   open.value = true;
 }
+function toggleMute() {
+  videoPinia.toggleMute();
+}
 
 function autoResizeTextarea(e) {
   const textarea = e.target;
   textarea.style.height = "auto";
   textarea.style.height = textarea.scrollHeight + "px";
 }
+defineExpose({
+  videoRef,
+});
+const props = defineProps({
+  current: {
+    type: Boolean,
+    default: false,
+  },
+});
+watch(
+  () => props.current,
+  (newVal) => {
+    if (!newVal && videoRef.value) {
+      videoRef.value.pause();
+      isPlaying.value = false;
+    } else {
+      videoRef.value.play();
+      isPlaying.value = true;
+    }
+    videoRef.value.currentTime = 0;
+  }
+);
 </script>
 <template>
   <div class="overflow-y-hidden h-full w-full relative">
-    <actions @openComment="openCom"/>
-    <video class="w-full object-cover h-full" autoplay muted loop playsinline>
+    <actions @openComment="openCom" />
+    <video
+      class="w-full object-cover h-full"
+      autoplay
+      ref="videoRef"
+      :muted="muted"
+      loop
+      playsinline
+    >
       <source src="@/assets/video/v1.mp4" type="video/mp4" />
     </video>
     <div
@@ -51,14 +102,33 @@ function autoResizeTextarea(e) {
           </div>
         </div>
         <div class="flex items-center gap-2 text-2xl">
-          <div class="text-xl">
-            <stop-icon />
+          <div class="text-xl" @click="toggleVideoPlayback">
+            <start v-if="!isPlaying" />
+            <stop-icon v-else />
           </div>
-          <div>
-            <audio-icon />
+
+          <div @click="toggleMute">
+            <audio-icon v-if="!muted" />
+            <muted-icon v-else />
           </div>
         </div>
       </div>
+    </div>
+    <div
+      @click="toggleMute"
+      v-if="muted"
+      class="absolute z-20 top-1/2 text-white flex items-center justify-center left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 rounded-full bg-dark-350/50 text-4xl"
+    >
+      <audio-icon v-if="!muted" />
+      <muted-icon v-else />
+    </div>
+    <div
+      @click="toggleVideoPlayback"
+      v-else-if="!isPlaying"
+      class="absolute z-20 top-1/2 text-white flex items-center justify-center left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 rounded-full bg-dark-350/50 text-4xl"
+    >
+      <start v-if="!isPlaying" />
+      <stop-icon v-else />
     </div>
     <a-drawer
       title=" "
