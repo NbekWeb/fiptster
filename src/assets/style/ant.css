@@ -50,10 +50,18 @@
   width: 100% !important;
 }
 
-
 .ant-switch.ant-switch-checked {
-    background: #3491DB !important;
+  background: #3491db !important;
 }
-.ant-switch{
-    background: #2a2d32 !important;
+.ant-switch {
+  background: #2a2d32 !important;
+}
+.ant-drawer-header {
+  display: none !important;
+}
+.ant-drawer-content {
+  border-radius: 24px 24px 0 0  !important;
+  border-top:2px solid #3599EA;
+  border-left:1px solid #3599EA;
+  border-right:1px solid #3599EA;
 }
