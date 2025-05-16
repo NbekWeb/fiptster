@@ -17,17 +17,14 @@ let stopAudioTimer = null;
 let lastClickTime = 0;
 
 function playTapSoundWithTimeout() {
-  // Create a new audio instance
   const audio = new Audio(tapSoundURL);
   audio.play().catch((err) => console.warn("Play blocked", err));
 
   tapAudioInstances.push(audio);
 
-  // Reset timer to stop all audio if no click in 300ms
   if (stopAudioTimer) clearTimeout(stopAudioTimer);
 
   stopAudioTimer = setTimeout(() => {
-    // Stop and clean all audio instances
     tapAudioInstances.forEach((a) => {
       a.pause();
       a.currentTime = 0;
@@ -61,7 +58,7 @@ const data = [
 
 function handleCardClick(e) {
   const now = Date.now();
-  if (now - lastClickTime < 100) return; // prevent double-firing
+  if (now - lastClickTime < 100) return; 
   lastClickTime = now;
   playTapSoundWithTimeout();
 
@@ -117,16 +114,13 @@ function handleCardClick(e) {
 }
 
 function initAudioOnce() {
-  // Play a dummy sound to unlock autoplay restrictions
   const audio = new Audio(tapSoundURL);
     audio.muted = true;
 
   audio.play().catch((err) => console.warn("Play blocked:", err));
 }
 
-// Call on mounted to unlock audio play on first interaction
 onMounted(() => {
-  // Make sure the first interaction unlocks the ability to play sound
   window.addEventListener("click", initAudioOnce, { once: true });
   window.addEventListener("touchstart", initAudioOnce, { once: true });
 });

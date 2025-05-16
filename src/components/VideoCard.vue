@@ -6,7 +6,7 @@ import chevron from "./icons/chevron.vue";
 import audioIcon from "./icons/audio.vue";
 import comment from "./comment.vue";
 import send from "./icons/send.vue";
-import { ref, defineExpose, watch } from "vue";
+import { ref, defineExpose, watch, onBeforeUnmount } from "vue";
 import actions from "@/components/actions.vue";
 import useVideo from "@/stores/video.pinia";
 import { storeToRefs } from "pinia";
@@ -74,6 +74,12 @@ watch(
     videoRef.value.currentTime = 0;
   }
 );
+onBeforeUnmount(() => {
+  if (videoRef.value) {
+    videoRef.value.currentTime = 0;
+    videoRef.value.pause();
+  }
+});
 </script>
 <template>
   <div class="overflow-y-hidden h-full w-full relative">

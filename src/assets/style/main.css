@@ -41,8 +41,7 @@ body {
   right: 25px !important;
 }
 .ant-drawer .ant-drawer-body {
-  background: rgba(199,199,199,.2) !important;
- 
+  background: rgba(199, 199, 199, 0.2) !important;
 }
 @keyframes likeBounce {
   0% {
@@ -61,4 +60,7 @@ body {
 
 .animate-like {
   animation: likeBounce 0.3s ease;
+}
+ .swap-drawer.ant-drawer-content {
+  background: #2C2F35 !important;
 }

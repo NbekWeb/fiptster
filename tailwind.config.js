@@ -23,6 +23,7 @@ module.exports = {
         },
         grey: {
           500: "#C7C7C7",
+          600:'#6C6C6C'
         },
       },
       fontSize: {

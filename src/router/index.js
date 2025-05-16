@@ -30,6 +30,11 @@ const router = createRouter({
           name: "Levels",
           component: () => import("@/pages/Levels.vue"),
         },
+         {
+          path: "swap",
+          name: "Swap",
+          component: () => import("@/pages/Swap.vue"),
+        },
       ],
     },
   ],
