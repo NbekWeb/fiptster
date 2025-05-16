@@ -9,7 +9,7 @@ function changeSelect(val) {
 }
 </script>
 <template>
-  <div class="flex absolute top-4 z-10 w-full  text-white text-sm">
+  <div class="flex absolute top-6 z-10 w-full  text-white text-sm">
     <div class="mx-5 w-full  flex">
       <div
         class="bg-blue-500/40 rounded h-10 flex justify-between w-full p-1 flex-grow"

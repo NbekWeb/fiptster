@@ -10,6 +10,8 @@ import { ref, defineExpose, watch } from "vue";
 import actions from "@/components/actions.vue";
 import useVideo from "@/stores/video.pinia";
 import { storeToRefs } from "pinia";
+import v1 from "@/assets/video/v1.mp4";
+import v2 from "@/assets/video/v2.mp4";
 
 const videoPinia = useVideo();
 const { muted } = storeToRefs(videoPinia);
@@ -54,6 +56,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  video: {
+    type: Number,
+    default: 0,
+  },
 });
 watch(
   () => props.current,
@@ -80,7 +86,7 @@ watch(
       loop
       playsinline
     >
-      <source src="@/assets/video/v1.mp4" type="video/mp4" />
+      <source :src="video == 0 ? v1 : v2" type="video/mp4" />
     </video>
     <div
       class="absolute bottom-7.5 left-0 w-full flex pl-6 pr-4 z-10 text-white"

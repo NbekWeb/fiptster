@@ -7,7 +7,6 @@ import "swiper/css/navigation";
 import tab from "@/components/tab.vue";
 import { ref } from "vue";
 
-
 const currentIndex = ref(0);
 
 const onSlideChange = (swiper) => {
@@ -28,7 +27,7 @@ const onSlideChange = (swiper) => {
       @slideChange="onSlideChange"
     >
       <SwiperSlide v-for="i in 5" :key="i">
-        <VideoCard :current="(i-1)==currentIndex" />
+        <VideoCard :current="i - 1 == currentIndex" :video="i%2"/>
       </SwiperSlide>
     </Swiper>
   </div>
