@@ -30,32 +30,35 @@ const router = createRouter({
           name: "Levels",
           component: () => import("@/pages/Levels.vue"),
         },
-         {
+        {
           path: "swap",
           name: "Swap",
           component: () => import("@/pages/Swap.vue"),
+        },
+        {
+          path: "friends",
+          name: "Friends",
+          component: () => import("@/pages/Friends.vue"),
         },
       ],
     },
   ],
 });
 
-//   router.beforeEach((to, from, next) => {
-//     const accessToken = localStorage.getItem("access_token");
+router.beforeEach((to, from, next) => {
+  const accessToken = localStorage.getItem("access_token");
 
-//     // document.title = to.meta.title || "Авторизоваться";
+  if (to.name === "login") {
+    return next();
+  }
 
-//     if (to.name === "login" || to.name === 'regis' || to.name === 'vklogin') {
-//       return next();
-//     }
-
-//     if (accessToken) {
-//       return next();
-//     } else {
-//       return next({
-//         name: "login"
-//       });
-//     }
-//   });
+  if (accessToken) {
+    return next();
+  } else {
+    return next({
+      name: "login",
+    });
+  }
+});
 
 export default router;

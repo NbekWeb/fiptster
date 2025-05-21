@@ -4,6 +4,7 @@ import heart from "./icons/heart.vue";
 import comment from "./icons/comment.vue";
 import share from "./icons/share.vue";
 import { ref } from "vue";
+import { message } from "ant-design-vue";
 
 const emit = defineEmits(["openComment"]);
 
@@ -39,6 +40,7 @@ const handleShare = async () => {
     alert("Your browser doesn't support the Share API.");
   }
 };
+
 </script>
 
 <template>
