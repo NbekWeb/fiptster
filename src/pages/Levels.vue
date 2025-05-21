@@ -16,9 +16,10 @@ function onSlideChange(swiper) {
 }
 const dynamicBlurStyle = computed(() => {
   return {
-    background: `${levels[activeIndex.value]?.blurColor}`,
+    background: levels[activeIndex.value]?.blurColor,
   };
 });
+
 
 const me = {
   name: "@itsmebro",
@@ -31,7 +32,7 @@ const me = {
     <div
       class="flex  flex-col items-center text-white relative "
     >
-      <div class="blur" :style="dynamicBlurStyle"></div>
+      <div class="blur" :key="activeIndex" :style="dynamicBlurStyle"></div>
 
       <Swiper
         :modules="[Navigation]"
