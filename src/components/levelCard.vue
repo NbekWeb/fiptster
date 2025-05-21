@@ -13,13 +13,10 @@ const dynamicCardStyle = {
     linear-gradient(180deg, ${props.data.border1}, ${props.data.border2}) border-box
   `,
 };
-
-
 </script>
 
 <template>
-  <div class="level-item ">
-   
+  <div class="level-item">
     <div class="relative z-1 flex flex-col items-center">
       <div
         class="level-card px-8 flex items-center justify-center"
