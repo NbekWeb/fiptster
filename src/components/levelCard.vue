@@ -1,4 +1,5 @@
 <script setup>
+
 const props = defineProps({
   data: {
     type: Object,
@@ -17,6 +18,7 @@ const dynamicCardStyle = {
 
 <template>
   <div class="level-item">
+
     <div class="relative z-1 flex flex-col items-center">
       <div
         class="level-card px-8 flex items-center justify-center"

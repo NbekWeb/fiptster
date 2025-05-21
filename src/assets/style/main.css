@@ -15,6 +15,9 @@ body {
   padding: 16px;
 }
 .blur {
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+   will-change: filter;
   width: 300px;
   height: 300px;
   border-radius: 50%;
@@ -24,6 +27,7 @@ body {
   position: absolute;
   top: 0;
   z-index: 1;
+  will-change: filter;
 }
 
 .swiper-button-prev,
@@ -62,6 +66,6 @@ body {
 .animate-like {
   animation: likeBounce 0.3s ease;
 }
- .swap-drawer.ant-drawer-content {
-  background: #2C2F35 !important;
+.swap-drawer.ant-drawer-content {
+  background: #2c2f35 !important;
 }
