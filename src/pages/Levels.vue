@@ -48,7 +48,7 @@ const me = {
         </SwiperSlide>
       </Swiper>
       <div class="min-h-max flex flex-col w-full px-4">
-        <div class="flex flex-col items-start w-full gap-1">
+        <div class="flex flex-col items-start w-full gap-1 relative z-10">
           <span class="text-base font-semibold"> Me </span>
           <userCard :data="me" />
         </div>
