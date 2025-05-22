@@ -20,7 +20,7 @@ onMounted(() => {
     window.Telegram.WebApp.expand();
   }
   const tg = window.Telegram.WebApp;
-  //   const initData = tg.initData;
+    const initData = tg.initData;
   console.log(initData);
  
   //   auth.postLogin({ initData }, () => {
