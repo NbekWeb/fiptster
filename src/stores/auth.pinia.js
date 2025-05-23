@@ -10,7 +10,7 @@ const useAuth = defineStore("auth", {
   actions: {
     postLogin(data, callback) {
       api({
-        url: "login/",
+        url: "account/auth/telegram/",
         method: "POST",
         data,
       })
@@ -23,16 +23,15 @@ const useAuth = defineStore("auth", {
         })
         .finally(() => {});
     },
-    getUser(callback) {
+    getUser() {
       const core = useCore();
       core.loadingUrl.add("user");
       api({
-        url: "profile/",
+        url: "account/profile/",
         method: "GET",
       })
         .then(({ data }) => {
           this.user = data;
-          callback(data.id)
         })
         .catch((error) => {
           message.error("Что-то пошло не так!");

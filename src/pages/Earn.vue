@@ -3,14 +3,21 @@ import wrapper from "@/components/wrapper.vue";
 import info from "@/components/info.vue";
 import chevron from "@/components/icons/chevron.vue";
 import coin from "@/components/icons/coin.vue";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import { useRouter } from "vue-router";
 import tapSoundURL from "../assets/sound/sound.mp3";
+import useAuth from "@/stores/auth.pinia";
+import defaultAvatar from "@/assets/img/user.png";
+import { storeToRefs } from "pinia";
+import { formatNumber } from "@/utils/numFormat";
 
 const router = useRouter();
 const points = ref(0);
 const pointsToAdd = 12;
 const clicks = ref([]);
+const auth = useAuth();
+
+const { user } = storeToRefs(auth);
 
 let tapAudioInstances = [];
 let stopAudioTimer = null;
@@ -37,28 +44,37 @@ function goTo(name) {
   router.push({ name });
 }
 
-const data = [
+const data = computed(() => [
   {
     title: "Earn per tap",
-    content: "+12",
+    content: user.value?.user_profile?.earn_per_tab
+      ? `+${user.value.user_profile.earn_per_tab}`
+      : "+0",
     logo: true,
   },
   {
     title: "Coins to level up",
-    content: "10 M",
+    content: user.value?.user_profile?.coin_level
+      ? `${formatNumber(user.value.user_profile.coin_level, "abbreviate")}`
+      : "0",
     logo: false,
   },
   {
     title: "Profit per scroll",
-    content: "+636.31K",
+    content: user.value?.user_profile?.profit_per_hour
+      ? `+${formatNumber(
+          user.value.user_profile.profit_per_hour,
+          "abbreviate"
+        )}`
+      : "+0",
     logo: true,
     info: "Lorem Ipsum dolor cop Lorem Ipsum dolor,  Lorem Ipsum dolor",
   },
-];
+]);
 
 function handleCardClick(e) {
   const now = Date.now();
-  if (now - lastClickTime < 100) return; 
+  if (now - lastClickTime < 100) return;
   lastClickTime = now;
   playTapSoundWithTimeout();
 
@@ -115,7 +131,7 @@ function handleCardClick(e) {
 
 function initAudioOnce() {
   const audio = new Audio(tapSoundURL);
-    audio.muted = true;
+  audio.muted = true;
 
   audio.play().catch((err) => console.warn("Play blocked:", err));
 }
@@ -132,8 +148,13 @@ onMounted(() => {
         class="max-h-max w-full flex justify-center gap-2 items-center"
         @click="goTo('User')"
       >
-        <img src="@/assets/img/user.png" class="w-8.5 h-auto object-contain" />
-        <span class="font-medium">@Nbekdev</span>
+        <img
+          :src="user.avatar ? user.avatar : defaultAvatar"
+          class="w-8.5 min-h-8.5 h-8.5 object-cover rounded-full"
+        />
+        <span class="font-medium">{{
+          user?.username ? `@${user.username}` : user.first_name
+        }}</span>
       </div>
     </template>
     <template #main>
@@ -145,14 +166,20 @@ onMounted(() => {
           class="flex items-center justify-center gap-2 font-bold text-40 my-5"
         >
           <coin class="text-[42px]" />
-          <span> 507, 981 </span>
+          <span>
+            {{ formatNumber(+user?.user_profile?.coin, "integer") }}
+          </span>
         </div>
         <div class="flex flex-col gap-1.5">
           <div class="w-full flex justify-between items-center text-sm">
             <span class="flex items-center gap-0.5" @click="goTo('Levels')"
               >Level <chevron class="text-xs" />
             </span>
-            <span> <span class="opacity-60">Level 1/ </span>12 </span>
+            <span>
+              <span class="opacity-60"
+                >Level {{ user?.user_rank ? user.user_rank : 1 }}/ </span
+              >11
+            </span>
           </div>
           <div
             class="flex relative h-2 w-full rounded-50 bg-dark-300 border border-dark-555"
@@ -168,7 +195,6 @@ onMounted(() => {
           <img
             src="@/assets/img/main-coin.png"
             class="w-full h-full object-contain main-coin max-h-max border border-red-500 max-w-max rounded-full"
-            
             @click.prevent="handleCardClick"
           />
         </div>

@@ -19,7 +19,7 @@ const props = defineProps({
       <span class="font-semibold">
         {{ data.content }}
       </span>
-      <a-dropdown :trigger="['click']" v-if="!!data.info" placement="bottom">
+      <a-dropdown :trigger="['click']" v-if="!!data.info" placement="bottom" >
         <a class="ant-dropdown-link" @click.prevent>
           <img
             src="@/assets/img/info.svg"

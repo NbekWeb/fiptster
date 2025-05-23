@@ -1,5 +1,4 @@
 <script setup>
-
 const props = defineProps({
   data: {
     type: Object,
@@ -18,16 +17,15 @@ const dynamicCardStyle = {
 
 <template>
   <div class="level-item">
-
     <div class="relative z-1 flex flex-col items-center">
       <div
         class="level-card px-8 flex items-center justify-center"
         :style="dynamicCardStyle"
       >
-        <img src="@/assets/img/p.png" class="w-full h-full object-contain" />
+        <img :src="data.img" class="w-full h-full object-contain" />
       </div>
-      <h3 class="mt-4 mb-0 font-semibold text-3xl">Rookie Voyeur</h3>
-      <span class="text-base opacity-60"> from 1K </span>
+      <h3 class="mt-4 mb-0 font-semibold text-3xl">{{ data.name }}</h3>
+      <span class="text-base opacity-60"> from {{ data.coin }} </span>
     </div>
   </div>
 </template>

@@ -40,6 +40,11 @@ const router = createRouter({
           name: "Friends",
           component: () => import("@/pages/Friends.vue"),
         },
+        {
+          path: "shop",
+          name: "Shop",
+          component: () => import("@/pages/Shop.vue"),
+        },
       ],
     },
     {

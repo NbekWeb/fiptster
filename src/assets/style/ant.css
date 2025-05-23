@@ -1,7 +1,7 @@
 .ant-dropdown .ant-dropdown-menu,
 .ant-dropdown-menu-submenu .ant-dropdown-menu {
   background-color: #c7c7c7 !important;
-  max-width: 80px !important;
+  max-width: 70px !important;
 }
 
 .ant-dropdown .ant-dropdown-menu .ant-dropdown-menu-item,

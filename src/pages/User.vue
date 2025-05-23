@@ -5,14 +5,18 @@ import MiniCard from "@/components/MiniCard.vue";
 import coin from "@/components/icons/coin.vue";
 import cash from "@/components/icons/cash.vue";
 import { TonConnectUI } from "@tonconnect/ui";
-
+import useAuth from "@/stores/auth.pinia";
+import { storeToRefs } from "pinia";
 import chevron from "@/components/icons/chevron.vue";
+import { formatNumber } from "@/utils/numFormat";
 
 const selectedLanguage = ref("English");
 const isOpen = ref(false);
 const sound = ref(false);
 const notification = ref(true);
 const connecting = ref(false);
+const auth = useAuth();
+const { user } = storeToRefs(auth);
 
 const languageOptions = [
   { label: "English", value: "English" },
@@ -38,18 +42,22 @@ const connectWallet = () => {
       connecting.value = false;
     });
 };
-
 </script>
 <template>
   <wrapper>
     <template #top>
       <div class="max-h-max w-full flex justify-center gap-2 items-center">
-        <img src="@/assets/img/user.png" class="w-8.5 h-auto object-contain" />
+        <img
+          :src="user.avatar ? user.avatar : '@/assets/img/user.png'"
+          class="w-8.5 h-8.5 object-cover min-h-8.5 rounded-full"
+        />
       </div>
     </template>
     <template #main>
       <div class="w-full text-white h-full overflow-y-auto">
-        <h3 class="text-center text-xl font-semibold">@NbekDev</h3>
+        <h3 class="text-center text-xl font-semibold">
+          {{ user?.username ? `@${user.username}` : user.first_name }}
+        </h3>
         <div class="flex flex-col gap-2">
           <MiniCard>
             <div class="flex justify-between items-center w-full">
@@ -58,7 +66,14 @@ const connectWallet = () => {
                 class="h-10 flex px-5 gap-2 items-center bg-dark-220 rounded-md"
               >
                 <coin class="text-15" />
-                <span>10,900,999 </span>
+                <span
+                  >{{
+                    formatNumber(
+                      user?.user_profile?.coin ? user?.user_profile?.coin : 0,
+                      "integer"
+                    )
+                  }}
+                </span>
               </div>
             </div>
           </MiniCard>
@@ -103,7 +118,7 @@ const connectWallet = () => {
           </MiniCard>
           <MiniCard>
             <div class="flex justify-between items-center w-full">
-              <span> Total FIPTp Earned </span>
+              <span> Total Watch Time </span>
               <div class="h-10 flex px-5 items-center bg-dark-220 rounded-md">
                 10,000 Hours
               </div>
@@ -111,7 +126,7 @@ const connectWallet = () => {
           </MiniCard>
           <MiniCard>
             <div class="flex justify-between items-center w-full">
-              <span> Total FIPTp Earned </span>
+              <span> Connect Wallet</span>
               <div
                 @click="connectWallet"
                 v-if="!connecting"

@@ -18,7 +18,7 @@ const props = defineProps({
     </div>
     <div
       class="border-t-2 border-blue-500 rounded-t-50 px-5 pt-7 pb-5 flex bg-dark-200 relative h-[calc(100%-52px)] overflow-y-hidden"
-      :class="type == 'main' ? ' -mt-12 ' : ' -mt-16 '"
+      :class="type == 'main' ? ' -mt-12 ' : type == 'full' ? '-mt-24 h-full' : ' -mt-16 '"
     >
       <slot name="main" />
     </div>
