@@ -10,10 +10,12 @@ import { formatNumber } from "@/utils/numFormat";
 import { ref, computed } from "vue";
 import { message } from "ant-design-vue";
 import useTask from "@/stores/tasks.pinia";
+import useAuth from "@/stores/auth.pinia";
 
 import closeIcon from "./icons/close.vue";
 
 const taskStore = useTask();
+const authStore = useAuth();
 const open = ref(false);
 const clicked = ref(false);
 const form = ref({
@@ -38,7 +40,11 @@ const channelImages = {
 const channelImage = computed(
   () => channelImages[props.item.channel_type] || x
 );
-
+function updateTask(){
+  taskStore.getTasks();
+        authStore.getUser();
+        onClose();
+}
 function goTask(link) {
   if (link) {
     if (!clicked.value) {
@@ -52,8 +58,7 @@ function goTask(link) {
             "abbreviate"
           )} coins!`
         );
-        taskStore.getTasks();
-        onClose();
+      updateTask()
       });
     }
   }
@@ -70,8 +75,8 @@ function claim(id, formRef) {
             "abbreviate"
           )} coins!`
         );
-        taskStore.getTasks();
-        onClose();
+        form.value.keyword = "";
+        updateTask()
       },
       form.value.keyword
     );
