@@ -25,6 +25,9 @@ function openDrawer(id) {
 function openWallet() {
   connectRef.value?.openWallet();
 }
+function goBack() {
+  drawerRef.value?.openDrawer();
+}
 function openShipping() {
   shippingRef.value?.openWallet();
 }
@@ -87,8 +90,8 @@ onMounted(() => {
         </div>
       </div>
       <shopItemDrawer ref="drawerRef" @goNext="openShipping" />
+      <Shipping ref="shippingRef" @back="goBack" />
       <ConnectWallet ref="connectRef" />
-      <Shipping ref="shippingRef" />
     </template>
   </wrapper>
 </template>

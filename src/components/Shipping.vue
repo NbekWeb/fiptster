@@ -39,10 +39,23 @@ const rules = {
 };
 
 function onClose() {
+  formState.fullName = "";
+  formState.email = "";
+  formState.address = "";
+  formState.city = "";
+  formState.country = "";
+  formState.zip = "";
+  formState.shipping = "standard";
   open.value = false;
 }
 function openWallet() {
   open.value = true;
+}
+const emit = defineEmits(["back"]);
+
+function goBack() {
+  onClose();
+  emit("back");
 }
 
 function handleSubmit() {
@@ -70,7 +83,7 @@ defineExpose({
     @close="onClose"
     height="90vh"
   >
-    <div class="text-white flex flex-col gap-4 items-center relative w-full     ">
+    <div class="text-white flex flex-col gap-4 items-center relative w-full">
       <h2 class="text-2xl font-medium">Shipping Information</h2>
       <p class="mt-3 text-xs font-semibold">
         Please provide your shipping details to continue with your order.
@@ -130,8 +143,21 @@ defineExpose({
           </a-radio-group>
         </a-form-item>
 
-        <div class="text-center mt-4">
-          <a-button type="primary" @click="handleSubmit">Submit</a-button>
+        <div
+          class="text-center mt-4 grid grid-cols-2 gap-4 h-10 text-lg font-semibold"
+        >
+          <button
+            class="h-full flex items-center justify-center w-full rounded-10 bg-white text-dark-300"
+            @click="goBack"
+          >
+            Back
+          </button>
+          <button
+            class="h-full flex items-center justify-center w-full rounded-10 bg-blue-500"
+            @click="handleSubmit"
+          >
+            Checkout
+          </button>
         </div>
       </a-form>
     </div>
