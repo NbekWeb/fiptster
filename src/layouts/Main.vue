@@ -19,6 +19,7 @@ onMounted(() => {
     :spinning="
       loadingUrl.has('user') ||
       loadingUrl.has('market/categories/') ||
+      loadingUrl.has('account/channels/') ||
       loadingUrl.has('market/markets')
     "
   >
