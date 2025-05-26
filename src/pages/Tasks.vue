@@ -30,6 +30,12 @@ onMounted(() => {
             <task-comp :item="item" />
           </template>
         </div>
+        <div class="flex flex-col w-full gap-3 mt-6">
+          <span>Task list</span>
+          <template v-for="item in tasks?.[1]?.tasks">
+            <task-comp :item="item" type="task" />
+          </template>
+        </div>
       </div>
     </template>
   </wrapper>

@@ -8,7 +8,7 @@ const useTask = defineStore("tasks", {
     tasks: [],
   }),
   actions: {
-    getTasks(callback=() => {}) {
+    getTasks(callback = () => {}) {
       const core = useCore();
       core.loadingUrl.add("account/channels/");
       api({
@@ -21,6 +21,31 @@ const useTask = defineStore("tasks", {
         })
         .catch((error) => {
           message.error(error);
+        })
+        .finally(() => {
+          core.loadingUrl.delete("account/channels/");
+        });
+    },
+    checktask(id, callback = () => {}, secret_code = "") {
+      const core = useCore();
+      core.loadingUrl.add("account/channels/");
+      const params = {};
+      if (secret_code) {
+        params.secret_code = secret_code;
+      }
+      api({
+        url: `account/channels/check/${id}/`,
+        method: "GET",
+        params
+      })
+        .then(({ data }) => {
+          callback();
+        })
+        .catch((error) => {
+          console.log(error.response.data.msg);
+          if (error.response.data.msg) {
+            message.error(error.response.data.msg);
+          }
         })
         .finally(() => {
           core.loadingUrl.delete("account/channels/");

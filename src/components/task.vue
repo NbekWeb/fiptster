@@ -8,14 +8,25 @@ import coin from "@/components/icons/coin.vue";
 import chevron from "./icons/chevron.vue";
 import { formatNumber } from "@/utils/numFormat";
 import { ref, computed } from "vue";
+import { message } from "ant-design-vue";
+import useTask from "@/stores/tasks.pinia";
+
 import closeIcon from "./icons/close.vue";
+
+const taskStore = useTask();
 const open = ref(false);
+const clicked = ref(false);
+const form = ref({
+  keyword: "",
+});
 
 function onClose() {
   open.value = false;
 }
 function toggleOpen() {
   open.value = true;
+  clicked.value = false;
+  form.value.keyword = "";
 }
 const channelImages = {
   Youtube: youtube,
@@ -30,11 +41,52 @@ const channelImage = computed(
 
 function goTask(link) {
   if (link) {
-    window.open(link, "_blank");
+    if (!clicked.value) {
+      window.open(link, "_blank");
+      clicked.value = true;
+    } else {
+      taskStore.checktask(props.item?.uuid, () => {
+        message.success(
+          `You have successfully claimed ${formatNumber(
+            props.item.channel_coin,
+            "abbreviate"
+          )} coins!`
+        );
+        taskStore.getTasks();
+        onClose();
+      });
+    }
   }
 }
 
-function check(uuid) {}
+function claim(id, formRef) {
+  formRef.validate().then(() => {
+    taskStore.checktask(
+      id,
+      () => {
+        message.success(
+          `You have successfully claimed ${formatNumber(
+            props.item.channel_coin,
+            "abbreviate"
+          )} coins!`
+        );
+        taskStore.getTasks();
+        onClose();
+      },
+      form.value.keyword
+    );
+  });
+}
+
+const rules = {
+  keyword: [
+    {
+      required: true,
+      message: "Please input the secret code!",
+      trigger: "blur",
+    },
+  ],
+};
 
 const props = defineProps({
   item: {
@@ -61,7 +113,16 @@ const props = defineProps({
         </span>
       </div>
     </div>
-    <chevron class="text-2xl text-white/30" @click="toggleOpen" />
+    <chevron
+      class="text-2xl text-white/30"
+      @click="toggleOpen"
+      v-if="!item?.is_applied"
+    />
+    <img
+      src="@/assets/img/checked.svg"
+      v-else
+      class="w-6 h-auto object-contain"
+    />
     <a-drawer
       title=" "
       placement="bottom"
@@ -87,7 +148,9 @@ const props = defineProps({
           @click="goTask(item.channel_link)"
           class="h-12 flex items-center text-base font-semibold px-10 rounded-10 border-none outline-none hover:opacity-90 bg-blue-500"
         >
-          {{ type === "youtube" ? " Watch video" : "Follow" }}
+          {{
+            type === "youtube" ? " Watch video" : clicked ? "Claim" : "Follow"
+          }}
         </button>
         <div
           v-if="type == 'youtube'"
@@ -97,19 +160,33 @@ const props = defineProps({
           <p class="px-6 text-center text-sm">
             To claim your reward, paste the secret code below
           </p>
-          <div class="flex flex-col gap-4">
-            <a-input placeholder="Insert Keyword ..." class="task-inp" />
+
+          <a-form
+            :model="form"
+            :rules="rules"
+            ref="formRef"
+            class="flex flex-col gap-0 w-full"
+          >
+            <a-form-item name="keyword">
+              <a-input
+                v-model:value="form.keyword"
+                placeholder="Insert Keyword ..."
+                class="task-inp"
+              />
+            </a-form-item>
             <button
-              @click="check(item.uuid)"
-              class="h-12 w-full flex justify-center items-center text-base font-semibold px-10 rounded-10 border-none outline-none hover:opacity-90 bg-blue-500"
+              @click.prevent="claim(item.uuid, $refs.formRef)"
+              class="h-12 w-full flex text-white justify-center items-center text-base font-semibold px-10 rounded-10 border-none outline-none hover:opacity-90 bg-blue-500"
             >
               Claim
             </button>
-          </div>
+          </a-form>
         </div>
         <div class="flex items-center gap-2.5" v-else>
           <coin class="text-2xl" />
-          <div class="bg-grey-600 py-1 px-2.5 rounded">+{{ formatNumber(item.channel_coin) }}</div>
+          <div class="bg-grey-600 py-1 px-2.5 rounded">
+            +{{ formatNumber(item.channel_coin) }}
+          </div>
         </div>
       </div>
     </a-drawer>
