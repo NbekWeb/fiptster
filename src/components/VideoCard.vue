@@ -11,7 +11,7 @@ import actions from "@/components/actions.vue";
 import useVideo from "@/stores/video.pinia";
 import { storeToRefs } from "pinia";
 import v1 from "@/assets/video/v1.mp4";
-import v2 from "@/assets/video/v2.mp4";
+import v2 from "@/assets/video/v1.mp4";
 
 const videoPinia = useVideo();
 const { muted } = storeToRefs(videoPinia);

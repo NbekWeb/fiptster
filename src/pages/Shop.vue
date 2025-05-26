@@ -2,42 +2,93 @@
 import wrapper from "@/components/wrapper.vue";
 import shopCard from "@/components/shopCard.vue";
 import shopItemDrawer from "@/components/shopItemDrawer.vue";
-import { ref } from "vue";
+import ConnectWallet from "@/components/ConnectWallet.vue";
+import Shipping from "@/components/Shipping.vue";
+import { ref, onMounted } from "vue";
+import useMarket from "@/stores/market.pinia";
+import { storeToRefs } from "pinia";
+import { message } from "ant-design-vue";
 
-const selectedType = ref("All");
+const market = useMarket();
+const selectedType = ref("-1");
+const { products } = storeToRefs(market);
 
 const drawerRef = ref();
+const connectRef = ref();
+const shippingRef = ref();
 
-function openDrawer() {
-  drawerRef.value?.openDrawer();
+function openDrawer(id) {
+  market.getProduct(id, () => {
+    drawerRef.value?.openDrawer();
+  });
+}
+function openWallet() {
+  connectRef.value?.openWallet();
+}
+function openShipping() {
+  shippingRef.value?.openWallet();
 }
 function changeType(type) {
-  selectedType.value = type;
+  market.getProducts({ category: type }, (data) => {
+    if (data?.length == 0) {
+      message.error("No products found for this category!");
+    } else {
+      selectedType.value = type;
+    }
+  });
 }
-const types = ["All", "Clothing", "Accessories", "NFTs"];
+const types = ref([
+  {
+    name: "All",
+    uuid: "-1",
+  },
+]);
+
+onMounted(() => {
+  market.getShopCategory((res) => {
+    types.value = [
+      {
+        name: "All",
+        uuid: "-1",
+      },
+      ...res.map((item) => ({
+        name: item.name,
+        uuid: item.uuid,
+      })),
+    ];
+  });
+  market.getProducts();
+});
 </script>
 <template>
   <wrapper type="full">
     <template #main>
       <div class="text-white h-full overflow-y-auto">
         <div
-          class="w-full bg-dark-300 text-xs font-semibold mb-4 h-10 rounded-10 p-1 grid grid-cols-4"
+          class="w-full min-w-full bg-dark-300 text-xs font-semibold mb-4 h-10 rounded-10 p-1 grid grid-cols-4"
         >
           <span
             v-for="(item, i) in types"
             :key="i"
-            class="h-full flex items-center justify-center rounded"
-            :class="selectedType == item && 'bg-blue-500'"
-            @click="changeType(item)"
+            class="h-full min-w-max flex items-center justify-center rounded"
+            :class="selectedType == item.uuid && 'bg-blue-500'"
+            @click="changeType(item.uuid)"
           >
-            {{ item }}
+            {{ item?.name }}
           </span>
         </div>
         <div class="grid grid-cols-2 gap-4">
-          <shopCard v-for="i in 10" :key="i" @open="openDrawer" />
+          <shopCard
+            v-for="item in products"
+            :key="item.id"
+            :data="item"
+            @open="openDrawer"
+          />
         </div>
       </div>
-      <shopItemDrawer ref="drawerRef" />
+      <shopItemDrawer ref="drawerRef" @goNext="openShipping" />
+      <ConnectWallet ref="connectRef" />
+      <Shipping ref="shippingRef" />
     </template>
   </wrapper>
 </template>

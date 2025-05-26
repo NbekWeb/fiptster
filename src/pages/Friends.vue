@@ -88,7 +88,7 @@ const handleCopy = async () => {
             <friendCard v-for="i in 10" :key="i"  />
           </div>
         </div>
-        <div class="flex justify-center mt-11">
+        <div class="flex justify-center mt-5">
             <button @click="handleShare" class="h-12.5 bg-blue-500 rounded-10 max-w-max  px-7.5 flex items-center">
                 Invite more friends
             </button>

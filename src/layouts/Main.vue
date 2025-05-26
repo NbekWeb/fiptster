@@ -15,7 +15,13 @@ onMounted(() => {
 });
 </script>
 <template>
-  <a-spin :spinning="loadingUrl.has('user')">
+  <a-spin
+    :spinning="
+      loadingUrl.has('user') ||
+      loadingUrl.has('market/categories/') ||
+      loadingUrl.has('market/markets')
+    "
+  >
     <div class="h-full w-full flex pb-20">
       <RouterView />
       <div class="fixed bottom-0 left-0 w-full">
