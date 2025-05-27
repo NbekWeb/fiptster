@@ -10,18 +10,24 @@ import useAuth from "@/stores/auth.pinia";
 import defaultAvatar from "@/assets/img/user.png";
 import { storeToRefs } from "pinia";
 import { formatNumber } from "@/utils/numFormat";
+import { message } from "ant-design-vue";
 
 const router = useRouter();
-const points = ref(0);
-const pointsToAdd = 12;
-const clicks = ref([]);
 const auth = useAuth();
-
 const { user } = storeToRefs(auth);
+const points = ref(0);
+const userCoin = ref(0);
+const stopClicking = ref(false);
+const pointsToAdd = computed(() => {
+  return user.value?.user_profile?.earn_per_tab || 1;
+});
+const clicks = ref([]);
 
 let tapAudioInstances = [];
 let stopAudioTimer = null;
 let lastClickTime = 0;
+let clickCount = 0;
+let clickTimer = null;
 
 function playTapSoundWithTimeout() {
   const audio = new Audio(tapSoundURL);
@@ -72,61 +78,99 @@ const data = computed(() => [
   },
 ]);
 
+function addCoin() {
+  auth.addCoin(
+    {
+      coin_point: points.value,
+    },
+    () => {
+      auth.getUser(() => {
+        userCoin.value = user.value?.user_profile?.coin || 0;
+      });
+      points.value = 0;
+      clicks.value = [];
+      clickCount = 0;
+    }
+  );
+}
+
 function handleCardClick(e) {
-  const now = Date.now();
-  if (now - lastClickTime < 100) return;
-  lastClickTime = now;
-  playTapSoundWithTimeout();
-
-  let x, y;
-
-  if (e.touches && e.touches.length > 0) {
-    x = e.touches[0].pageX;
-    y = e.touches[0].pageY;
+  if (stopClicking.value) {
+    message.error("Please wait before clicking again!");
   } else {
-    x = e.pageX;
-    y = e.pageY;
+    const now = Date.now();
+    if (now - lastClickTime < 100 || stopClicking.value) return;
+    lastClickTime = now;
+
+    if (clickCount >= 10) {
+      stopClicking.value = true;
+      clickCount = 0;
+      addCoin();
+      setTimeout(() => {
+        stopClicking.value = false;
+      }, 10000);
+      return;
+    }
+    userCoin.value = +userCoin.value + pointsToAdd.value;
+
+    if (clickTimer) clearTimeout(clickTimer);
+    clickCount++;
+    clickTimer = setTimeout(() => {
+      addCoin();
+    }, 500);
+
+    playTapSoundWithTimeout();
+
+    let x, y;
+    if (e.touches && e.touches.length > 0) {
+      x = e.touches[0].pageX;
+      y = e.touches[0].pageY;
+    } else {
+      x = e.pageX;
+      y = e.pageY;
+    }
+
+    const card = e.currentTarget;
+    const rect = card.getBoundingClientRect();
+    const offsetX = x - rect.left - rect.width / 2;
+    const offsetY = y - rect.top - rect.height / 2;
+
+    card.style.transform = `perspective(1000px) rotateX(${
+      -offsetY / 10
+    }deg) rotateY(${offsetX / 10}deg)`;
+
+    setTimeout(() => {
+      card.style.transform = "";
+    }, 100);
+
+    points.value += pointsToAdd.value;
+
+    clicks.value.push({ id: Date.now(), x, y });
+
+    const label = document.createElement("div");
+    label.textContent = `+${pointsToAdd.value}`;
+    label.style.position = "absolute";
+    label.style.left = `${x - 20}px`;
+    label.style.top = `${y}px`;
+    label.style.fontSize = "24px";
+    label.style.fontWeight = "bold";
+    label.style.color = "#fff";
+    label.style.textShadow = "0 0 5px #000";
+    label.style.transition = "all 1s ease-in-out";
+    label.style.opacity = "1";
+    label.style.pointerEvents = "none";
+    label.style.zIndex = "100";
+    document.body.appendChild(label);
+
+    setTimeout(() => {
+      label.style.transform = "translateY(-50px)";
+      label.style.opacity = "0";
+    }, 0);
+
+    setTimeout(() => {
+      label.remove();
+    }, 500);
   }
-
-  const card = e.currentTarget;
-  const rect = card.getBoundingClientRect();
-  const offsetX = x - rect.left - rect.width / 2;
-  const offsetY = y - rect.top - rect.height / 2;
-
-  card.style.transform = `perspective(1000px) rotateX(${
-    -offsetY / 10
-  }deg) rotateY(${offsetX / 10}deg)`;
-
-  setTimeout(() => {
-    card.style.transform = "";
-  }, 100);
-
-  points.value += pointsToAdd;
-  clicks.value.push({ id: Date.now(), x, y });
-
-  const label = document.createElement("div");
-  label.textContent = `+${pointsToAdd}`;
-  label.style.position = "absolute";
-  label.style.left = `${x - 20}px`;
-  label.style.top = `${y}px`;
-  label.style.fontSize = "24px";
-  label.style.fontWeight = "bold";
-  label.style.color = "#fff";
-  label.style.textShadow = "0 0 5px #000";
-  label.style.transition = "all 1s ease-in-out";
-  label.style.opacity = "1";
-  label.style.pointerEvents = "none";
-  label.style.zIndex = "100";
-  document.body.appendChild(label);
-
-  setTimeout(() => {
-    label.style.transform = "translateY(-50px)";
-    label.style.opacity = "0";
-  }, 0);
-
-  setTimeout(() => {
-    label.remove();
-  }, 500);
 }
 
 function initAudioOnce() {
@@ -137,6 +181,9 @@ function initAudioOnce() {
 }
 
 onMounted(() => {
+  auth.getUser(() => {
+    userCoin.value = user.value?.user_profile?.coin || 0;
+  });
   window.addEventListener("click", initAudioOnce, { once: true });
   window.addEventListener("touchstart", initAudioOnce, { once: true });
 });
@@ -152,9 +199,9 @@ onMounted(() => {
           :src="user.avatar ? user.avatar : defaultAvatar"
           class="w-8.5 min-h-8.5 h-8.5 object-cover rounded-full"
         />
-        <span class="font-medium">{{
-          user?.username ? `@${user.username}` : user.first_name
-        }}</span>
+        <span class="font-medium"
+          >{{ user?.username ? `@${user.username}` : user.first_name }}
+        </span>
       </div>
     </template>
     <template #main>
@@ -167,7 +214,7 @@ onMounted(() => {
         >
           <coin class="text-[42px]" />
           <span>
-            {{ formatNumber(+user?.user_profile?.coin, "integer") }}
+            {{ formatNumber(+userCoin, "integer") }}
           </span>
         </div>
         <div class="flex flex-col gap-1.5">
@@ -176,8 +223,8 @@ onMounted(() => {
               >Level <chevron class="text-xs" />
             </span>
             <span>
-              <span class="opacity-60"
-                >Level {{ user?.user_rank ? user.user_rank : 1 }}/ </span
+              <span class="opacity-60">
+                {{ user?.profile_level ? user.profile_level : 1 }}/ </span
               >11
             </span>
           </div>
@@ -185,7 +232,12 @@ onMounted(() => {
             class="flex relative h-2 w-full rounded-50 bg-dark-300 border border-dark-555"
           >
             <div
-              class="absolute top-0 left-0 h-full w-10 bg-blue-500 rounded-50"
+              class="absolute top-0 left-0 h-full bg-blue-500 rounded-50"
+              :style="{
+                width:
+                  (user?.profile_level ? (user.profile_level / 11) * 100 : 0) +
+                  '%',
+              }"
             ></div>
           </div>
         </div>

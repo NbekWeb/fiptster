@@ -6,6 +6,7 @@ import useCore from "./core.pinia";
 const useAuth = defineStore("auth", {
   state: () => ({
     user: {},
+    grouped: [],
   }),
   actions: {
     postLogin(data, callback) {
@@ -23,7 +24,7 @@ const useAuth = defineStore("auth", {
         })
         .finally(() => {});
     },
-    getUser() {
+    getUser(callback = () => {}) {
       const core = useCore();
       core.loadingUrl.add("user");
       api({
@@ -32,6 +33,42 @@ const useAuth = defineStore("auth", {
       })
         .then(({ data }) => {
           this.user = data;
+          callback();
+        })
+        .catch((error) => {
+          message.error("Что-то пошло не так!");
+        })
+        .finally(() => {
+          core.loadingUrl.delete("user");
+        });
+    },
+    getGrouped() {
+      const core = useCore();
+      core.loadingUrl.add("user");
+      api({
+        url: "account/profile/grouped/",
+        method: "GET",
+      })
+        .then(({ data }) => {
+          this.grouped = data;
+        })
+        .catch((error) => {
+          message.error("Что-то пошло не так!");
+        })
+        .finally(() => {
+          core.loadingUrl.delete("user");
+        });
+    },
+    addCoin(data, callback) {
+      const core = useCore();
+      core.loadingUrl.add("user");
+      api({
+        url: "account/profile/coin_updated/",
+        method: "PATCH",
+        data,
+      })
+        .then(({ data }) => {
+          callback();
         })
         .catch((error) => {
           message.error("Что-то пошло не так!");
