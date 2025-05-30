@@ -20,6 +20,8 @@ const connecting = ref(false);
 const auth = useAuth();
 const { user } = storeToRefs(auth);
 
+const tonConnectUI = ref(null);
+
 const sound = ref(true);
 
 watch(
@@ -42,12 +44,8 @@ function goTg() {
 
 const connectWallet = () => {
   connecting.value = true;
-  const tonConnectUI = new TonConnectUI({
-    manifestUrl: "https://fiptster.vercel.app/tonconnect-manifest.json",
-    buttonRootId: "ton-connect-button",
-  });
 
-  tonConnectUI.connector
+  tonConnectUI.value.connector
     .connect()
     .then((wallet) => {})
     .catch((err) => {
@@ -63,12 +61,16 @@ watch(notification, (val) => {
   localStorage.setItem("push", val.toString());
 });
 onMounted(() => {
+  tonConnectUI.value = new TonConnectUI({
+    manifestUrl: "https://fiptster.vercel.app/tonconnect-manifest.json",
+    buttonRootId: "ton-connect-button",
+  });
   const storedPush = localStorage.getItem("push");
   notification.value = storedPush !== null ? storedPush === "true" : true;
 
-  isWalletConnected.value = tonConnectUI.connector.connected;
-  if (tonConnectUI.connector.connected) {
-    const walletInfo = tonConnectUI.connector.wallet;
+  isWalletConnected.value = tonConnectUI.value?.connector.connected;
+  if (tonConnectUI.value.connector.connected) {
+    const walletInfo = tonConnectUI.value.connector.wallet;
     console.log("Ulangan wallet:", walletInfo);
   }
 });
@@ -164,7 +166,7 @@ onMounted(() => {
               >
                 <cash />
               </div>
-              <button v-show="connecting" id="ton-connect-button"></button>
+              <button id="ton-connect-button"></button>
             </div>
           </MiniCard>
         </div>
