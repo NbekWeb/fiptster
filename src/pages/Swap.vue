@@ -3,9 +3,18 @@ import wrapper from "@/components/wrapper.vue";
 import info from "@/components/info.vue";
 import coin from "@/components/icons/coin.vue";
 import swapicon from "@/components/icons/swap.vue";
-import { ref } from "vue";
+import { ref, computed } from "vue";
+import useAuth from "@/stores/auth.pinia";
+import { storeToRefs } from "pinia";
+import { formatNumber } from "@/utils/numFormat";
+import useSwap from "@/stores/swap.pinia";
+import { message } from "ant-design-vue";
 
+const swapPinia = useSwap();
 const open = ref(false);
+const mount = ref(0);
+const auth = useAuth();
+const { user } = storeToRefs(auth);
 
 function confirmOpen() {
   open.value = true;
@@ -15,10 +24,10 @@ function onClose() {
   open.value = false;
 }
 
-const data = [
+const data = computed(() => [
   {
     title: "FIPTp",
-    content: "507.98 K",
+    content: formatNumber(+user.value?.user_profile?.coin || 0, "abbreviate"),
     logo: true,
   },
   {
@@ -32,7 +41,34 @@ const data = [
     logo: true,
     info: "Lorem Ipsum dolor cop Lorem Ipsum dolor,  Lorem Ipsum dolor",
   },
-];
+]);
+
+function onInput(e) {
+  let sanitized = e.target.value.replace(/[^0-9]/g, "");
+
+  if (sanitized.length > 1 && sanitized.startsWith("0")) {
+    sanitized = sanitized.replace(/^0+/, "");
+  }
+
+  const numericValue = parseInt(sanitized || "0");
+
+  const max = Math.floor(+user.value?.user_profile?.coin || 0);
+
+  const limitedValue = numericValue > max ? max : numericValue;
+
+  mount.value = limitedValue;
+  e.target.value = limitedValue === 0 ? "" : String(limitedValue);
+}
+function onSwap() {
+  swapPinia.swap({ amount: mount.value }, () => {
+    onClose();
+    message.success(
+      `Successfully swapped ${mount.value} FIPTp to ${mount.value / 5} FIPT`
+    );
+    mount.value = 0;
+    auth.getUser()
+  });
+}
 </script>
 <template>
   <wrapper type="swap">
@@ -57,7 +93,13 @@ const data = [
               class="rounded-10 bg-dark-280 px-3 py-5 flex justify-between mt-2.5"
             >
               <div class="flex flex-col gap-4">
-                <span class="font-semibold text-base">0.00</span>
+                <input
+                  @input="onInput"
+                  v-model="mount"
+                  placeholder="0.00"
+                  class="font-semibold text-base bg-transparent hover:border-none border-none outline-none"
+                />
+
                 <span class="text-xs opacity-80">Balance: 508,981 FIPTp</span>
               </div>
               <div
@@ -93,7 +135,7 @@ const data = [
               class="rounded-10 bg-dark-280 px-3 py-5 flex justify-between mt-2.5"
             >
               <div class="flex flex-col gap-4">
-                <span class="font-semibold text-base">0.00</span>
+                <span class="font-semibold text-base">{{ mount / 5 }}</span>
                 <span class="text-xs opacity-80">Balance: 508,981 FIPT</span>
               </div>
               <div
@@ -126,10 +168,11 @@ const data = [
             </h3>
             <div class="pl-5 text-sm flex items-center gap-4 mt-3">
               <img src="@/assets/img/check.svg" class="w-4 h-auto" />
-              Account 1
+              {{ user.first_name }}
             </div>
             <p class="font-inter text-center text-base font-bold mb-4 mt-2">
-              Swap: 100,000 FIPTp 100FIPT
+              Swap: {{ formatNumber(mount) }} FIPTp to
+              {{ formatNumber(mount / 5) }} FIPT
             </p>
             <div class="grid gap-5 grid-cols-2 h-12">
               <button
@@ -139,7 +182,7 @@ const data = [
                 Cancel
               </button>
               <button
-                @click="onClose"
+                @click="onSwap"
                 class="text-white bg-blue-500 font-medium text-base flex items-center justify-center h-full rounded-10"
               >
                 Confirm

@@ -1,11 +1,18 @@
 <script setup>
-import { ref ,computed} from "vue";
+import { ref, computed } from "vue";
 import selectingCard from "@/components/selectingCard.vue";
 import coin from "@/components/icons/coin.vue";
 import closeIcon from "./icons/close.vue";
 import useMarket from "@/stores/market.pinia";
 import { storeToRefs } from "pinia";
 import { formatNumber } from "@/utils/numFormat";
+
+const props = defineProps({
+  data: {
+    type: Object,
+    default: () => ({}),
+  },
+});
 
 const emit = defineEmits(["goNext"]);
 const market = useMarket();
@@ -17,7 +24,7 @@ function onClose() {
 }
 function openDrawer() {
   open.value = true;
-  selected.value = product.value.sizes?.[0] ?? null; 
+  selected.value = product.value.sizes?.[0] ?? null;
 }
 function handleAddToCart() {
   onClose();
@@ -50,7 +57,7 @@ defineExpose({
           <closeIcon />
         </div>
         <img
-          src="@/assets/img/cloth.png"
+          :src="product?.image"
           class="w-full h-[180px] object-cover rounded-10"
         />
         <span class="font-bold text-3xl"> {{ product?.name }} </span>

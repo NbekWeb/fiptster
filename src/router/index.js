@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import Main from "@/layouts/Main.vue";
 import Earn from "@/pages/Earn.vue";
 import Feed from "@/pages/Feed.vue";
-import Shop from "@/components/icons/shop.vue";
+import Shop from "@/pages/Shop.vue";;
 import Friends from "@/pages/Friends.vue";
 import Levels from "@/pages/Levels.vue";
 import Swap from "@/pages/Swap.vue";

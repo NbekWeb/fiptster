@@ -83,13 +83,13 @@ onMounted(() => {
         <div class="grid grid-cols-2 gap-4">
           <shopCard
             v-for="item in products"
-            :key="item.id"
+            :key="item.uuid"
             :data="item"
-            @open="openDrawer"
+            @open="openDrawer(item.uuid)"
           />
         </div>
       </div>
-      <shopItemDrawer ref="drawerRef" @goNext="openShipping" />
+      <shopItemDrawer ref="drawerRef" @goNext="openShipping"  />
       <Shipping ref="shippingRef" @back="goBack" />
       <ConnectWallet ref="connectRef" />
     </template>
