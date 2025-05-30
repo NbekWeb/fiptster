@@ -36,7 +36,7 @@ function onSwiper(swiper) {
   swiperInstance.value = swiper;
   if (user.value?.profile_level) swiper.slideTo(user.value.profile_level);
 
-  swiper.slideTo(7);
+  swiper.slideTo(user.value.profile_level);
 }
 watch(
   () => user.value?.profile_level,
