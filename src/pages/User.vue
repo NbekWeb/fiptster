@@ -42,16 +42,6 @@ function goTg() {
   window.open("https://t.me/warburg1", "_blank");
 }
 
-const connectWallet = () => {
-  connecting.value = true;
-
-  tonConnectUI.value.connector
-    .connect()
-    .then((wallet) => {})
-    .catch((err) => {
-      connecting.value = false;
-    });
-};
 function toggleSound() {
   auth.toggleSound({ sound: sound.value }, () => {
     user.value.is_sound = !user.value.is_sound;
@@ -89,12 +79,11 @@ onMounted(() => {
       <div class="w-full text-white h-full overflow-y-auto">
         <h3 class="text-center text-xl font-semibold">
           {{ user?.username ? `@${user.username}` : user.first_name }}
-      
         </h3>
         <div class="flex flex-col gap-2">
           <MiniCard>
             <div class="flex justify-between items-center w-full">
-              <span> Total FIPTp Earned     {{ isWalletConnected }} </span>
+              <span> Total FIPTp Earned {{ tonConnectUI.connector.wallet; }} </span>
               <div
                 class="h-10 flex px-5 gap-2 items-center bg-dark-220 rounded-md"
               >
@@ -160,13 +149,7 @@ onMounted(() => {
           <MiniCard>
             <div class="flex justify-between items-center w-full">
               <span> Connect Wallet</span>
-              <div
-                @click="connectWallet"
-                v-if="!connecting"
-                class="h-10 flex w-10 justify-center text-xl items-center bg-dark-220 rounded-md"
-              >
-                <cash />
-              </div>
+
               <button id="ton-connect-button"></button>
             </div>
           </MiniCard>
