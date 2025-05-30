@@ -11,13 +11,13 @@ import userCard from "@/components/userCard.vue";
 import useAuth from "@/stores/auth.pinia";
 import { storeToRefs } from "pinia";
 
+
 const activeIndex = ref(0);
 const swiperRef = ref(null);
 const authStore = useAuth();
 const { grouped, user } = storeToRefs(authStore);
 function onSlideChange(swiper) {
   activeIndex.value = swiper.activeIndex;
-  console.log("Current slide index:", activeIndex.value);
 }
 const dynamicBlurStyle = computed(() => {
   return {
@@ -25,11 +25,11 @@ const dynamicBlurStyle = computed(() => {
   };
 });
 
-const me = {
-  name: "@itsmebro",
-  coin: "30,613",
-  place: 5,
-};
+const me = computed(() => ({
+  name: user.value.username,
+  coin: user.value?.user_profile?.coin,
+  place: user.value.user_rank,
+}));
 const swiperInstance = ref(null);
 
 function onSwiper(swiper) {
@@ -42,7 +42,7 @@ watch(
   () => user.value?.profile_level,
   (newLevel) => {
     if (swiperInstance.value) {
-      swiperInstance.value.slideTo(newLevel);
+      swiperInstance.value.slideTo(newLevel - 1);
     }
   },
   { immediate: true }
@@ -80,8 +80,8 @@ onMounted(() => {
         <div class="flex flex-col items-start w-full gap-1 mt-4">
           <span class="text-base font-semibold"> Top 100 Earners </span>
           <div class="flex flex-col gap-2 w-full pb-2">
-            <template v-for="i in 100">
-              <userCard :data="{ ...me, place: i }" />
+            <template v-for="(item, i) in grouped?.[activeIndex]?.users_data">
+              <userCard :data="{ name:item?.username,avatar:item?.avatar,coin:item.user_profile.coin, place: i + 1 }" />
             </template>
           </div>
         </div>

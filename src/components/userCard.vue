@@ -4,6 +4,7 @@ import gold from "@/assets/img/gold.png";
 import silver from "@/assets/img/silver.png";
 import bronze from "@/assets/img/bronze.png";
 import { placements } from "ant-design-vue/es/vc-tour/placements";
+import { formatNumber } from "@/utils/numFormat";
 
 const props = defineProps({
   data: {
@@ -21,13 +22,13 @@ const coins = [gold, silver, bronze];
   >
     <div class="flex gap-4 h-full text-sm">
       <img src="@/assets/img/user2.png" class="h-14 w-auto object-contain" />
-      <div class="flex flex-col gap-2.5 items-center">
+      <div class="flex flex-col gap-2.5 ">
         <span>
-          {{ data?.name }}
+         @{{ data?.name }}
         </span>
         <div class="flex gap-2 items-center">
           <coin class="text-xl" />
-          <span class="opacity-60">{{ data?.coin }}</span>
+          <span class="opacity-60">{{ formatNumber(data?.coin, "abbreviate")  }}</span>
         </div>
       </div>
     </div>
