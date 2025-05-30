@@ -49,17 +49,20 @@ defineExpose({
     height="auto"
   >
     <div class="text-white flex flex-col gap-4 items-center relative">
-      <div class="pr-10 flex flex-col items-center w-full gap-4">
+      <div class=" flex flex-col items-center w-full gap-4 ">
         <div
           @click="onClose"
           class="absolute text-dark-400 -top-3 -right-3 w-7 h-7 rounded-full bg-white opacity-35 flex items-center justify-center text-xl"
         >
           <closeIcon />
         </div>
-        <img
-          :src="product?.image"
-          class="w-full h-[180px] object-cover rounded-10"
-        />
+        <div class="w-full px-10 ">
+          <img
+            :src="product?.image"
+            class="w-full h-[180px] object-cover rounded-10 "
+          />
+        </div>
+
         <span class="font-bold text-3xl"> {{ product?.name }} </span>
       </div>
 
