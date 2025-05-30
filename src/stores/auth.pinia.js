@@ -7,6 +7,8 @@ const useAuth = defineStore("auth", {
   state: () => ({
     user: {},
     grouped: [],
+    referalls: [],
+    points: 0,
   }),
   actions: {
     postLogin(data, callback) {
@@ -93,6 +95,41 @@ const useAuth = defineStore("auth", {
         })
         .finally(() => {
           core.loadingUrl.delete("user");
+        });
+    },
+    getReferall(callback = () => {}) {
+      const core = useCore();
+      core.loadingUrl.add("referals");
+      api({
+        url: "account/profile/referals/",
+        method: "GET",
+      })
+        .then(({ data }) => {
+          this.referalls = data;
+          callback();
+        })
+        .catch((error) => {
+          message.error("Что-то пошло не так!");
+        })
+        .finally(() => {
+          core.loadingUrl.delete("referals");
+        });
+    },
+    getReferallPoint() {
+      const core = useCore();
+      core.loadingUrl.add("referals/points");
+      api({
+        url: "account/profile/referals/points/",
+        method: "GET",
+      })
+        .then(({ data }) => {
+          this.points = data?.[0]?.points;
+        })
+        .catch((error) => {
+          message.error("Что-то пошло не так!");
+        })
+        .finally(() => {
+          core.loadingUrl.delete("referals/points");
         });
     },
   },

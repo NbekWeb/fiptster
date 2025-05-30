@@ -22,6 +22,8 @@ onMounted(() => {
       loadingUrl.has('account/channels/') ||
       loadingUrl.has('feeds/categories/') ||
       loadingUrl.has('feeds/feeds/') ||
+      loadingUrl.has('referals/points') ||
+      loadingUrl.has('referals') ||
       loadingUrl.has('market/markets')
     "
   >
