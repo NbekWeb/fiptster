@@ -102,7 +102,7 @@ onMounted(() => {
             </span>
           </div>
           <div class="flex flex-col gap-2 mt-2.5" v-if="referalls.length > 0">
-            <friendCard v-for="(item, i) in referalls" :key="i" />
+            <friendCard v-for="(item, i) in referalls" :key="i" :data="item" />
           </div>
           <span v-else class="font-medium text-base mt-5">
             No referrals yet. Share your link and start earning!
