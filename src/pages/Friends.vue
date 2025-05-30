@@ -33,7 +33,7 @@ const handleShare = async () => {
 const handleCopy = async () => {
   try {
     await navigator.clipboard.writeText(
-      `https://t.me/nbekbot/salom?startapp=${user.value.tg_id}`
+      `https://t.me/nbekbot/start?startapp=${user.value.tg_id}`
     );
     message.success("Link copied to clipboard!");
   } catch (error) {
