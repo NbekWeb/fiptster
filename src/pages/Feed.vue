@@ -44,7 +44,7 @@ const handleVideoEnded = () => {
   }
 };
 onBeforeRouteLeave(() => {
-  videoPinia.videosCount 
+  videoPinia.videosCount =1
   if (swiperRef.value) {
     const videos = swiperRef.value.el.querySelectorAll("video");
     videos.forEach((video) => {
