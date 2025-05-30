@@ -32,7 +32,7 @@ function openShipping() {
   shippingRef.value?.openWallet();
 }
 function changeType(type) {
-  market.getProducts({ category: type }, (data) => {
+  market.getProducts({ category: type > 0 ? type : "" }, (data) => {
     if (data?.length == 0) {
       message.info("Comming soon!");
     } else {
@@ -73,7 +73,7 @@ onMounted(() => {
           <span
             v-for="(item, i) in types"
             :key="i"
-            class="h-full min-w-max flex items-center justify-center rounded"
+            class="h-full min-w-max flex items-center justify-center rounded hover:cursor-pointer"
             :class="selectedType == item.uuid && 'bg-blue-500'"
             @click="changeType(item.uuid)"
           >
@@ -89,7 +89,7 @@ onMounted(() => {
           />
         </div>
       </div>
-      <shopItemDrawer ref="drawerRef" @goNext="openShipping"  />
+      <shopItemDrawer ref="drawerRef" @goNext="openShipping" />
       <Shipping ref="shippingRef" @back="goBack" />
       <ConnectWallet ref="connectRef" />
     </template>

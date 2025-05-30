@@ -16,7 +16,7 @@ const emit = defineEmits(["open"]);
 <template>
   <div
     @click="openDrawer"
-    class="pt-8 px-3 pb-3.5 bg-dark-300 rounded-2xl flex flex-col items-center gap-2"
+    class="pt-8 px-3 pb-3.5 bg-dark-300 rounded-2xl flex flex-col items-center gap-2 hover:cursor-pointer"
   >
     <img :src="data?.image" class="w-full h-22 rounded-10" />
     <span class="text-xs font-bold"> {{ data?.name }} </span>

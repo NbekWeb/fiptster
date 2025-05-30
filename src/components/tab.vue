@@ -46,7 +46,7 @@ defineExpose({
           @click="changeSelect(item.uuid)"
           v-for="(item, i) in tabs"
           :key="i"
-          class="transition-all duration-300 hover:cursor-pointer rounded h-full flex items-center font-semibold px-4"
+          class="transition-all duration-300 hover:cursor-pointer rounded h-full flex items-center font-semibold px-4 hover:cursor-pointer"
           :class="selected == item.uuid && 'bg-blue-500'"
         >
           {{ item?.name }}
