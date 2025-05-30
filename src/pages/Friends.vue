@@ -43,7 +43,9 @@ const handleCopy = async () => {
 };
 
 function refreshReferall() {
-  auth.getReferall();
+  auth.getReferall(()=>{
+    auth.getUser()
+  });
 }
 onMounted(() => {
   refreshReferall();
