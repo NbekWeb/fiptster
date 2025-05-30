@@ -83,7 +83,7 @@ onMounted(() => {
         <div class="flex flex-col gap-2">
           <MiniCard>
             <div class="flex justify-between items-center w-full">
-              <span> Total FIPTp Earned {{ tonConnectUI.connector.wallet; }} </span>
+              <span> Total FIPTp Earned {{ tonConnectUI.connector.wallet }} </span>
               <div
                 class="h-10 flex px-5 gap-2 items-center bg-dark-220 rounded-md"
               >
