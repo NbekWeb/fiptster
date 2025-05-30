@@ -58,10 +58,10 @@ onMounted(() => {
   const storedPush = localStorage.getItem("push");
   notification.value = storedPush !== null ? storedPush === "true" : true;
 
-  if (tonConnectUI.value.connector.connected) {
+  if (tonConnectUI.value.connector) {
     const walletInfo = tonConnectUI.value.connector.wallet;
     isWalletConnected.value = walletInfo;
-    console.log("Ulangan wallet:", walletInfo);
+    console.log("Ulangan wallet:", tonConnectUI.value?.connector);
   }
 });
 </script>
