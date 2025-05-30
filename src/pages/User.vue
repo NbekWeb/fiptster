@@ -81,7 +81,6 @@ onMounted(() => {
           {{ user?.username ? `@${user.username}` : user.first_name }}
         </h3>
         <p>
-          {{ tonConnectUI }}
           {{ tonConnectUI.connector }}
         </p>
         <div class="flex flex-col gap-2">
