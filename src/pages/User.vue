@@ -13,7 +13,7 @@ import { formatNumber } from "@/utils/numFormat";
 const selectedLanguage = ref("English");
 const isOpen = ref(false);
 
-const isWalletConnected = ref(false);
+const isWalletConnected = ref(null);
 
 const notification = ref(true);
 const connecting = ref(false);
@@ -68,9 +68,9 @@ onMounted(() => {
   const storedPush = localStorage.getItem("push");
   notification.value = storedPush !== null ? storedPush === "true" : true;
 
-  isWalletConnected.value = tonConnectUI.value?.connector.connected;
   if (tonConnectUI.value.connector.connected) {
     const walletInfo = tonConnectUI.value.connector.wallet;
+    isWalletConnected.value = walletInfo;
     console.log("Ulangan wallet:", walletInfo);
   }
 });
@@ -89,11 +89,12 @@ onMounted(() => {
       <div class="w-full text-white h-full overflow-y-auto">
         <h3 class="text-center text-xl font-semibold">
           {{ user?.username ? `@${user.username}` : user.first_name }}
+      
         </h3>
         <div class="flex flex-col gap-2">
           <MiniCard>
             <div class="flex justify-between items-center w-full">
-              <span> Total FIPTp Earned </span>
+              <span> Total FIPTp Earned     {{ isWalletConnected }} </span>
               <div
                 class="h-10 flex px-5 gap-2 items-center bg-dark-220 rounded-md"
               >
