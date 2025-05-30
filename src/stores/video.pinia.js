@@ -7,6 +7,7 @@ const useVideo = defineStore("video", {
   state: () => ({
     user: {},
     muted: true,
+    videosCount: 1,
   }),
   actions: {
     toggleMute() {

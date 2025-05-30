@@ -7,36 +7,57 @@ import { ref } from "vue";
 import { message } from "ant-design-vue";
 import { formatNumber } from "@/utils/numFormat";
 import useFeed from "@/stores/feeds.pinia";
-// import 
+import { computed } from "vue";
 
 const emit = defineEmits(["openComment"]);
 const feedPinia = useFeed();
+const props = defineProps({
+  data: {
+    type: Object,
+    default: () => ({}),
+  },
+});
 
-const like = ref(false);
+const like = computed(() => props.data?.feed_is_liked);
 const animate = ref(false);
 
 const handleOpenComment = () => {
   emit("openComment");
 };
 
-const toggleLike = () => {
-  like.value = !like.value;
+function togggle() {
+  props.data.feed_is_liked = !props.data.feed_is_liked;
   animate.value = true;
   setTimeout(() => {
     animate.value = false;
   }, 300);
-  feedPinia.likeVideo({ feed: props.data?.feed_uuid });
+}
+
+const toggleLike = () => {
+  if (!props.data.feed_is_liked) {
+    feedPinia.likeVideo(props.data?.uuid, () => {
+      togggle();
+      props.data.feed_like_count++;
+    });
+  } else {
+    feedPinia.dislikeVideo(props.data?.uuid, () => {
+      togggle();
+      props.data.feed_like_count--;
+    });
+  }
 };
 
 const handleShare = async () => {
+  feedPinia.shareFeed(props.data.uuid, () => {
+    props.data.send_feed++;
+  });
   if (navigator.share) {
     try {
       await navigator.share({
-        title: "Check this out!",
-        text: "I found something interesting for you.",
+        title: props.data.name,
+        text: props.data.description,
         url: window.location.href,
       });
-      console.log("Shared successfully");
     } catch (error) {
       console.warn("Share canceled or failed:", error);
     }
@@ -45,12 +66,9 @@ const handleShare = async () => {
   }
 };
 
-const props = defineProps({
-  data: {
-    type: Object,
-    default: () => ({}),
-  },
-});
+function goSourse(link) {
+  window.open(link, "_blank");
+}
 </script>
 
 <template>
@@ -58,6 +76,7 @@ const props = defineProps({
     class="flex text-3xl flex-col w-12 absolute bottom-25 items-center text-white z-10 right-2.5 gap-6"
   >
     <div
+      @click="goSourse(data?.feeds_source)"
       class="flex rounded-full items-center justify-center w-full h-12 bg-blue-500"
     >
       <globus />
@@ -74,13 +93,13 @@ const props = defineProps({
     <div class="flex flex-col items-center hover:cursor-pointer">
       <comment @click="handleOpenComment" />
       <span class="text-sm font-medium">{{
-        formatNumber(data?.feed_comment_count, "abbreviate")
+        formatNumber(data?.comment_list.length, "abbreviate")
       }}</span>
     </div>
     <div class="flex flex-col items-center hover:cursor-pointer">
       <share @click="handleShare" />
       <span class="text-sm font-medium">{{
-        formatNumber(1212, "abbreviate")
+        formatNumber(data.send_feed, "abbreviate")
       }}</span>
     </div>
   </div>

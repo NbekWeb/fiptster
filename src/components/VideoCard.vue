@@ -6,18 +6,31 @@ import chevron from "./icons/chevron.vue";
 import audioIcon from "./icons/audio.vue";
 import comment from "./comment.vue";
 import send from "./icons/send.vue";
-import { ref, defineExpose, watch, onBeforeUnmount } from "vue";
+import { ref, defineExpose, watch, onBeforeUnmount, onMounted } from "vue";
 import actions from "@/components/actions.vue";
 import useVideo from "@/stores/video.pinia";
+import useFeed from "@/stores/feeds.pinia";
+import useAuth from "@/stores/auth.pinia";
 import { storeToRefs } from "pinia";
 
 const videoPinia = useVideo();
-const { muted } = storeToRefs(videoPinia);
+const feedPinia = useFeed();
+const authPinia = useAuth();
+const { muted, videosCount } = storeToRefs(videoPinia);
+const { user } = storeToRefs(authPinia);
 
 const open = ref(false);
 const videoRef = ref(null);
 const isPlaying = ref(true);
 const commentText = ref("");
+const emit = defineEmits(["videoEnded"]);
+
+const onEnded = (val) => {
+  if (val) {
+    emit("videoEnded");
+  }
+  toggleVideoPlayback();
+};
 
 function toggleVideoPlayback() {
   if (!videoRef.value) return;
@@ -78,16 +91,26 @@ onBeforeUnmount(() => {
     videoRef.value.pause();
   }
 });
+
+function sendComment() {
+  feedPinia.sendComment(props.data.uuid, { text: commentText.value }, () => {
+    feedPinia.getFeed(props.data.uuid, (data) => {
+      props.data.comment_list = data.feed_comment_list;
+      commentText.value = "";
+    });
+  });
+}
 </script>
 <template>
   <div class="overflow-y-hidden h-full w-full relative">
     <actions @openComment="openCom" :data="data" />
+
     <video
+      @ended="() => onEnded(data.type === 'advertisement')"
       class="w-full object-cover h-full"
       autoplay
       ref="videoRef"
       :muted="muted"
-      loop
       playsinline
     >
       <source :src="data?.video_file" type="video/mp4" />
@@ -99,7 +122,7 @@ onBeforeUnmount(() => {
         <div class="flex-grow flex flex-col gap-1.5">
           <div class="flex justify-between w-full items-center text-7">
             <span class="flex items-center gap-0.5">
-              You've watched 10/20 videos <chevron />
+              You've watched {{ videosCount }}/20 videos <chevron />
             </span>
             <span class="opacity-50"
               >Watch 10 more videos to earn 100k FIPTp !</span
@@ -107,7 +130,8 @@ onBeforeUnmount(() => {
           </div>
           <div class="relative w-full h-2.5 bg-dark-300 rounded-xl">
             <div
-              class="absolute top-0 left-0 w-1/2 h-full rounded-xl bg-blue-500 border-[0.5px] border-dark-555"
+              :style="{ width: (videosCount / 20) * 100 + '%' }"
+              class="absolute top-0 left-0 h-full rounded-xl bg-blue-500 border-[0.5px] border-dark-555"
             ></div>
           </div>
         </div>
@@ -147,11 +171,14 @@ onBeforeUnmount(() => {
       :open="open"
       @close="onClose"
     >
-      <h3 class="text-dark-220 font-semibold text-sm text-center">
-        35059 Comments
+      <h3
+        v-if="data.comment_list.length > 1"
+        class="text-dark-220 font-semibold text-sm text-center"
+      >
+        {{ data.comment_list.length }} Comments
       </h3>
       <div class="flex flex-col gap-3 pb-13">
-        <comment v-for="i in 10" :key="i" />
+        <comment v-for="(item, i) in data.comment_list" :key="i" :data="item" />
       </div>
 
       <div class="fixed bottom-0 pb-4 left-0 bg-transparent px-6 w-full">
@@ -166,6 +193,7 @@ onBeforeUnmount(() => {
             class="flex-grow text-sm border-none outline-none px-1 resize-none overflow-hidden bg-transparent"
           />
           <div
+            @click="sendComment"
             class="h-7 w-7 flex items-center justify-center text-base text-white bg-blue-500 rounded"
           >
             <send />

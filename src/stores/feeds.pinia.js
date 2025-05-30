@@ -27,7 +27,7 @@ const useFeed = defineStore("feeds", {
           core.loadingUrl.delete("feeds/categories/");
         });
     },
-    getFeeds(params) {
+    getFeeds(params, callback = () => {}) {
       const core = useCore();
       core.loadingUrl.add("feeds/feeds/");
       api({
@@ -36,13 +36,53 @@ const useFeed = defineStore("feeds", {
         params,
       })
         .then(({ data }) => {
-          this.feeds = data;
+          if (data.length == 0) {
+            message.error("This category is currently empty!");
+          } else {
+            this.feeds = data;
+          }
+
+          callback(data.length);
         })
         .catch((error) => {
           message.error(error);
         })
         .finally(() => {
           core.loadingUrl.delete("feeds/feeds/");
+        });
+    },
+    shareFeed(id, callback) {
+      const core = useCore();
+      core.loadingUrl.add("feeds/feeds/id");
+      api({
+        url: `feeds/feeds/${id}/`,
+        method: "GET",
+      })
+        .then(({ data }) => {
+          callback();
+        })
+        .catch((error) => {
+          message.error(error);
+        })
+        .finally(() => {
+          core.loadingUrl.delete("feeds/feeds/id");
+        });
+    },
+    getFeed(id, callback) {
+      const core = useCore();
+      core.loadingUrl.add("feeds/feeds/id");
+      api({
+        url: `feeds/feeds/${id}/`,
+        method: "GET",
+      })
+        .then(({ data }) => {
+          callback(data);
+        })
+        .catch((error) => {
+          message.error(error);
+        })
+        .finally(() => {
+          core.loadingUrl.delete("feeds/feeds/id");
         });
     },
     checktask(id, callback = () => {}, secret_code = "") {
@@ -70,22 +110,91 @@ const useFeed = defineStore("feeds", {
           core.loadingUrl.delete("account/channels/");
         });
     },
-    likeVideo(data) {
+    likeVideo(uuid, callback) {
       const core = useCore();
       core.loadingUrl.add("feeds/feeds/like/");
       api({
-        url: "feeds/feeds/like/",
-        method: "POST",
-        data,
+        url: `feeds/feeds/likes/${uuid}/`,
+        method: "GET",
       })
         .then(({ data }) => {
-          message.success("Video liked successfully");
+          callback();
         })
         .catch((error) => {
           message.error(error);
         })
         .finally(() => {
           core.loadingUrl.delete("feeds/feeds/like/");
+        });
+    },
+    likeComment(uuid, callback) {
+      const core = useCore();
+      core.loadingUrl.add("comments");
+      api({
+        url: `feeds/feeds/comments/like/${uuid}/`,
+        method: "POST",
+      })
+        .then(({ data }) => {
+          callback();
+        })
+        .catch((error) => {
+          message.error(error);
+        })
+        .finally(() => {
+          core.loadingUrl.delete("comments");
+        });
+    },
+    disLikeComment(uuid, callback) {
+      const core = useCore();
+      core.loadingUrl.add("comments");
+      api({
+        url: `feeds/feeds/comments/dislike/${uuid}/`,
+        method: "DELETE",
+      })
+        .then(({ data }) => {
+          callback();
+        })
+        .catch((error) => {
+          message.error(error);
+        })
+        .finally(() => {
+          core.loadingUrl.delete("comments");
+        });
+    },
+
+    dislikeVideo(uuid, callback) {
+      const core = useCore();
+      core.loadingUrl.add("feeds/feeds/like/");
+      api({
+        url: `feeds/feeds/dislike/${uuid}/`,
+        method: "DELETE",
+      })
+        .then(({ data }) => {
+          callback();
+        })
+        .catch((error) => {
+          message.error(error);
+        })
+        .finally(() => {
+          core.loadingUrl.delete("feeds/feeds/like/");
+        });
+    },
+    sendComment(id, data, callback) {
+      const core = useCore();
+      core.loadingUrl.add("comments");
+      api({
+        url: `/feeds/feeds/comments/${id}/`,
+        method: "POST",
+        data,
+      })
+        .then(({ data }) => {
+          callback();
+        })
+        .catch((error) => {
+          message.error(error);
+        })
+        .finally(() => {
+          core.loadingUrl.delete("comments");
         });
     },
   },

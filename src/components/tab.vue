@@ -2,6 +2,7 @@
 import { ref, onMounted } from "vue";
 import { storeToRefs } from "pinia";
 import useFeed from "@/stores/feeds.pinia";
+import { message } from "ant-design-vue";
 
 const feedPinia = useFeed();
 const { categries } = storeToRefs(feedPinia);
@@ -15,14 +16,25 @@ onMounted(() => {
   feedPinia.getFeedsCategory((data) => {
     tabs.value = data;
     selected.value = data[0]?.uuid || "";
-    feedPinia.getFeeds({ uuid: data[0]?.uuid || "" });
+    feedPinia.getFeeds({ category: data[0]?.uuid || "" });
   });
 });
 
 function changeSelect(val) {
-  selected.value = val;
-  feedPinia.getFeeds({ uuid: val });
+  feedPinia.getFeeds({ category: val }, (i) => {
+    if (i !== 0) {
+      selected.value = val;
+    }
+  });
 }
+
+function getFeed() {
+  feedPinia.getFeeds({ category: selected.value }, (i) => {});
+}
+
+defineExpose({
+  getFeed,
+});
 </script>
 <template>
   <div class="flex absolute top-6 z-10 w-full text-white text-sm">
