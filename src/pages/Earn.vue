@@ -81,7 +81,7 @@ const data = computed(() => [
 function addCoin() {
   auth.addCoin(
     {
-      coin_point: points.value,
+      coin_point: points.value / user.value.user_profile?.earn_per_tab,
     },
     () => {
       auth.getUser(() => {
