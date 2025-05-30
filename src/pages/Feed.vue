@@ -1,11 +1,12 @@
 <script setup>
 import VideoCard from "@/components/VideoCard.vue";
+import { onBeforeRouteLeave } from "vue-router";
 import { Swiper, SwiperSlide } from "swiper/vue";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import tab from "@/components/tab.vue";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, onUnmounted } from "vue";
 import { storeToRefs } from "pinia";
 import useFeed from "@/stores/feeds.pinia";
 import useVideo from "@/stores/video.pinia";
@@ -35,9 +36,23 @@ const handleVideoEnded = () => {
   if (!isLastSlide) {
     swiperRef.value?.slideNext();
   } else {
-    tabRef.value?.getFeed();
+    tabRef.value?.getFeed(() => {
+      currentIndex.value = 0;
+      swiperRef.value?.slideTo(0, 0);
+      videoPinia.videosCount = 1;
+    });
   }
 };
+onBeforeRouteLeave(() => {
+  if (swiperRef.value) {
+    const videos = swiperRef.value.el.querySelectorAll("video");
+    videos.forEach((video) => {
+      video.pause();
+      video.src = ""; 
+      video.load();
+    });
+  }
+});
 </script>
 <template>
   <div

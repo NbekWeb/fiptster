@@ -34,7 +34,7 @@ function openShipping() {
 function changeType(type) {
   market.getProducts({ category: type }, (data) => {
     if (data?.length == 0) {
-      message.error("No products found for this category!");
+      message.info("Comming soon!");
     } else {
       selectedType.value = type;
     }

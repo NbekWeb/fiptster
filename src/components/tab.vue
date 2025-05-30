@@ -8,8 +8,6 @@ const feedPinia = useFeed();
 const { categries } = storeToRefs(feedPinia);
 const tabs = ref([]);
 
-// ["Teasing", "Seductive", "Live", " Unveiled"];
-
 const selected = ref("");
 
 onMounted(() => {
@@ -28,8 +26,10 @@ function changeSelect(val) {
   });
 }
 
-function getFeed() {
-  feedPinia.getFeeds({ category: selected.value }, (i) => {});
+function getFeed(callback) {
+  feedPinia.getFeeds({ category: selected.value }, (i) => {
+    callback();
+  });
 }
 
 defineExpose({

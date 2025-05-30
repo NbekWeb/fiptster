@@ -1,6 +1,14 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Main from "@/layouts/Main.vue";
 import Earn from "@/pages/Earn.vue";
+import Feed from "@/pages/Feed.vue";
+import Shop from "@/components/icons/shop.vue";
+import Friends from "@/pages/Friends.vue";
+import Levels from "@/pages/Levels.vue";
+import Swap from "@/pages/Swap.vue";
+import User from "@/pages/User.vue";
+import Login from "@/pages/Login.vue";
+import Tasks from "@/pages/Tasks.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -18,45 +26,45 @@ const router = createRouter({
         {
           path: "user",
           name: "User",
-          component: () => import("@/pages/User.vue"),
+          component: User,
         },
         {
           path: "feed",
           name: "Feed",
-          component: () => import("@/pages/Feed.vue"),
+          component: Feed,
         },
         {
           path: "levels",
           name: "Levels",
-          component: () => import("@/pages/Levels.vue"),
+          component: Levels,
         },
         {
           path: "swap",
           name: "Swap",
-          component: () => import("@/pages/Swap.vue"),
+          component: Swap,
         },
         {
           path: "friends",
           name: "Friends",
-          component: () => import("@/pages/Friends.vue"),
+          component: Friends,
         },
         {
           path: "shop",
           name: "Shop",
-          component: () => import("@/pages/Shop.vue"),
+          component: Shop,
         },
         {
           path: "tasks",
           name: "Tasks",
-          component: () => import("@/pages/Tasks.vue"),
+          component: Tasks,
         },
       ],
     },
     {
       path: "/login",
       name: "login",
-      component: () => import("@/pages/Login.vue"),
-    }
+      component: Login,
+    },
   ],
 });
 

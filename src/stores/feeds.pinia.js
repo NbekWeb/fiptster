@@ -37,7 +37,7 @@ const useFeed = defineStore("feeds", {
       })
         .then(({ data }) => {
           if (data.length == 0) {
-            message.error("This category is currently empty!");
+            message.info("Comming soon!");
           } else {
             this.feeds = data;
           }
