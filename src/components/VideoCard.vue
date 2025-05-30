@@ -10,8 +10,6 @@ import { ref, defineExpose, watch, onBeforeUnmount } from "vue";
 import actions from "@/components/actions.vue";
 import useVideo from "@/stores/video.pinia";
 import { storeToRefs } from "pinia";
-import v1 from "@/assets/video/v1.mp4";
-import v2 from "@/assets/video/v1.mp4";
 
 const videoPinia = useVideo();
 const { muted } = storeToRefs(videoPinia);
@@ -56,9 +54,9 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-  video: {
-    type: Number,
-    default: 0,
+  data: {
+    type: Object,
+    default: () => ({}),
   },
 });
 watch(
@@ -83,7 +81,7 @@ onBeforeUnmount(() => {
 </script>
 <template>
   <div class="overflow-y-hidden h-full w-full relative">
-    <actions @openComment="openCom" />
+    <actions @openComment="openCom" :data="data" />
     <video
       class="w-full object-cover h-full"
       autoplay
@@ -92,7 +90,7 @@ onBeforeUnmount(() => {
       loop
       playsinline
     >
-      <source :src="video == 0 ? v1 : v2" type="video/mp4" />
+      <source :src="data?.video_file" type="video/mp4" />
     </video>
     <div
       class="absolute bottom-7.5 left-0 w-full flex pl-6 pr-4 z-10 text-white"

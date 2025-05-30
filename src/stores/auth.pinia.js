@@ -77,6 +77,24 @@ const useAuth = defineStore("auth", {
           core.loadingUrl.delete("user");
         });
     },
+    toggleSound(data, callback) {
+      const core = useCore();
+      core.loadingUrl.add("user");
+      api({
+        url: "account/profile/sound/",
+        method: "PATCH",
+        data,
+      })
+        .then(({ data }) => {
+          callback();
+        })
+        .catch((error) => {
+          message.error("Что-то пошло не так!");
+        })
+        .finally(() => {
+          core.loadingUrl.delete("user");
+        });
+    },
   },
 });
 

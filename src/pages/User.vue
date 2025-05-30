@@ -1,6 +1,6 @@
 <script setup>
 import wrapper from "@/components/wrapper.vue";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import MiniCard from "@/components/MiniCard.vue";
 import coin from "@/components/icons/coin.vue";
 import cash from "@/components/icons/cash.vue";
@@ -12,11 +12,23 @@ import { formatNumber } from "@/utils/numFormat";
 
 const selectedLanguage = ref("English");
 const isOpen = ref(false);
-const sound = ref(false);
+
+const isWalletConnected = ref(false);
+
 const notification = ref(true);
 const connecting = ref(false);
 const auth = useAuth();
 const { user } = storeToRefs(auth);
+
+const sound = ref(true);
+
+watch(
+  () => user.value?.is_sound,
+  (val) => {
+    sound.value = val ?? true;
+  },
+  { immediate: true }
+);
 
 const languageOptions = [
   { label: "English", value: "English" },
@@ -25,7 +37,7 @@ const languageOptions = [
 ];
 
 function goTg() {
-  window.open("https://t.me/your_username", "_blank");
+  window.open("https://t.me/warburg1", "_blank");
 }
 
 const connectWallet = () => {
@@ -42,6 +54,24 @@ const connectWallet = () => {
       connecting.value = false;
     });
 };
+function toggleSound() {
+  auth.toggleSound({ sound: sound.value }, () => {
+    user.value.is_sound = !user.value.is_sound;
+  });
+}
+watch(notification, (val) => {
+  localStorage.setItem("push", val.toString());
+});
+onMounted(() => {
+  const storedPush = localStorage.getItem("push");
+  notification.value = storedPush !== null ? storedPush === "true" : true;
+
+  isWalletConnected.value = tonConnectUI.connector.connected;
+  if (tonConnectUI.connector.connected) {
+    const walletInfo = tonConnectUI.connector.wallet;
+    console.log("Ulangan wallet:", walletInfo);
+  }
+});
 </script>
 <template>
   <wrapper>
@@ -99,7 +129,7 @@ const connectWallet = () => {
           <MiniCard>
             <div class="flex justify-between items-center w-full pr-4">
               <span> Sound </span>
-              <a-switch v-model:checked="sound" />
+              <a-switch v-model:checked="sound" @change="toggleSound" />
             </div>
           </MiniCard>
           <MiniCard>

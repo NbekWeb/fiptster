@@ -20,6 +20,8 @@ onMounted(() => {
       loadingUrl.has('user') ||
       loadingUrl.has('market/categories/') ||
       loadingUrl.has('account/channels/') ||
+      loadingUrl.has('feeds/categories/') ||
+      loadingUrl.has('feeds/feeds/') ||
       loadingUrl.has('market/markets')
     "
   >

@@ -118,8 +118,9 @@ function handleCardClick(e) {
     clickTimer = setTimeout(() => {
       addCoin();
     }, 500);
-
-    playTapSoundWithTimeout();
+    if (user.value?.is_sound) {
+      playTapSoundWithTimeout();
+    }
 
     let x, y;
     if (e.touches && e.touches.length > 0) {

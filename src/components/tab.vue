@@ -1,27 +1,43 @@
 <script setup>
-import { ref } from "vue";
-const tabs = ["Teasing", "Seductive", "Live", " Unveiled"];
+import { ref, onMounted } from "vue";
+import { storeToRefs } from "pinia";
+import useFeed from "@/stores/feeds.pinia";
 
-const selected = ref("Teasing");
+const feedPinia = useFeed();
+const { categries } = storeToRefs(feedPinia);
+const tabs = ref([]);
+
+// ["Teasing", "Seductive", "Live", " Unveiled"];
+
+const selected = ref("");
+
+onMounted(() => {
+  feedPinia.getFeedsCategory((data) => {
+    tabs.value = data;
+    selected.value = data[0]?.uuid || "";
+    feedPinia.getFeeds({ uuid: data[0]?.uuid || "" });
+  });
+});
 
 function changeSelect(val) {
   selected.value = val;
+  feedPinia.getFeeds({ uuid: val });
 }
 </script>
 <template>
-  <div class="flex absolute top-6 z-10 w-full  text-white text-sm">
-    <div class="mx-5 w-full  flex">
+  <div class="flex absolute top-6 z-10 w-full text-white text-sm">
+    <div class="mx-5 w-full flex">
       <div
         class="bg-blue-500/40 rounded h-10 flex justify-between w-full p-1 flex-grow"
       >
         <span
-          @click="changeSelect(item)"
+          @click="changeSelect(item.uuid)"
           v-for="(item, i) in tabs"
           :key="i"
           class="transition-all duration-300 hover:cursor-pointer rounded h-full flex items-center font-semibold px-4"
-          :class="selected == item && 'bg-blue-500'"
+          :class="selected == item.uuid && 'bg-blue-500'"
         >
-          {{ item }}
+          {{ item?.name }}
         </span>
       </div>
     </div>
