@@ -20,7 +20,7 @@ const handleShare = async () => {
       await navigator.share({
         title: "Check this out!",
         text: "I found something interesting for you.",
-        url: `https://t.me/nbekbot/start?startapp=${user.value.tg_id}`,
+        url: `https://t.me/nbekbot?startapp=${user.value.tg_id}`,
       });
       console.log("Shared successfully");
     } catch (error) {
