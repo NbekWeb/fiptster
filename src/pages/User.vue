@@ -61,7 +61,7 @@ onMounted(() => {
   if (tonConnectUI.value.connector) {
     const walletInfo = tonConnectUI.value.connector.wallet;
     isWalletConnected.value = walletInfo;
-    console.log("Ulangan wallet:", tonConnectUI.value?.connector);
+    // console.log("Ulangan wallet:", tonConnectUI.value?.connector);
   }
 });
 </script>
@@ -80,13 +80,11 @@ onMounted(() => {
         <h3 class="text-center text-xl font-semibold">
           {{ user?.username ? `@${user.username}` : user.first_name }}
         </h3>
-        <p>
-          {{ tonConnectUI?.connector }}
-        </p>
+       
         <div class="flex flex-col gap-2">
           <MiniCard>
             <div class="flex justify-between items-center w-full">
-              <span> Total FIPTp Earned {{ tonConnectUI?.connector?.wallet }} </span>
+              <span> Total FIPTp Earned </span>
               <div
                 class="h-10 flex px-5 gap-2 items-center bg-dark-220 rounded-md"
               >
