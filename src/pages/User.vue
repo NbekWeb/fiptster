@@ -80,6 +80,10 @@ onMounted(() => {
         <h3 class="text-center text-xl font-semibold">
           {{ user?.username ? `@${user.username}` : user.first_name }}
         </h3>
+        <p>
+          {{ tonConnectUI }}
+          {{ tonConnectUI.connector }}
+        </p>
         <div class="flex flex-col gap-2">
           <MiniCard>
             <div class="flex justify-between items-center w-full">
