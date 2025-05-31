@@ -11,11 +11,13 @@ import actions from "@/components/actions.vue";
 import useVideo from "@/stores/video.pinia";
 import useFeed from "@/stores/feeds.pinia";
 import useAuth from "@/stores/auth.pinia";
+import useCore from "@/stores/core.pinia";
 import { storeToRefs } from "pinia";
 
 const videoPinia = useVideo();
 const feedPinia = useFeed();
 const authPinia = useAuth();
+const core=useCore()
 const { muted, videosCount } = storeToRefs(videoPinia);
 const { user } = storeToRefs(authPinia);
 
@@ -92,6 +94,11 @@ onBeforeUnmount(() => {
   }
 });
 
+function handleLoadedData(){
+  core.loadingUrl.delete('video')
+
+}
+
 function sendComment() {
   feedPinia.sendComment(props.data.uuid, { text: commentText.value }, () => {
     feedPinia.getFeed(props.data.uuid, (data) => {
@@ -100,12 +107,17 @@ function sendComment() {
     });
   });
 }
+onMounted(()=>{
+   core.loadingUrl.add('video')
+})
 </script>
 <template>
   <div class="overflow-y-hidden h-full w-full relative">
     <actions @openComment="openCom" :data="data" />
 
     <video
+      preload="auto"
+      @loadeddata="handleLoadedData"
       @ended="() => onEnded(data.type === 'advertisement')"
       class="w-full object-cover h-full"
       autoplay

@@ -39,7 +39,7 @@ const data = computed(() => [
     title: "Conversion Rate",
     content: "80%",
     logo: true,
-    info: "Lorem Ipsum dolor cop Lorem Ipsum dolor,  Lorem Ipsum dolor",
+    info: "Reward granted after successfully watching 10 videos in a row!",
   },
 ]);
 
@@ -66,7 +66,7 @@ function onSwap() {
       `Successfully swapped ${mount.value} FIPTp to ${mount.value / 5} FIPT`
     );
     mount.value = 0;
-    auth.getUser()
+    auth.getUser();
   });
 }
 </script>
@@ -125,7 +125,8 @@ function onSwap() {
                   </a>
                   <template #overlay>
                     <div class="max-w-16 swap">
-                      Lorem Ipsum dolor cop Lorem Ipsum dolor, Lorem Ipsum dolor
+                      Conversion between FIPTP and FIPT tokens is subject to
+                      market volatility
                     </div>
                   </template>
                 </a-dropdown>

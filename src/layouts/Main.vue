@@ -24,6 +24,7 @@ onMounted(() => {
       loadingUrl.has('feeds/feeds/') ||
       loadingUrl.has('referals/points') ||
       loadingUrl.has('referals') ||
+      loadingUrl.has('video') ||
       loadingUrl.has('market/markets')
     "
   >
